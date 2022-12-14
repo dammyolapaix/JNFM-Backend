@@ -1,0 +1,28 @@
+{
+  "name": "rofiat-ecommerce-backend-api",
+  "version": "1.0.0",
+  "description": "An api for an ecommerce app",
+  "main": "scr/app.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --pretty --transpile-only src/app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "mongoose": "^6.8.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.14",
+    "@types/helmet": "^4.0.0",
+    "@types/node": "^18.11.11",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.3"
+  }
+}
