@@ -2,10 +2,11 @@
  * Required External Modules
  */
 import * as dotenv from 'dotenv'
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import { connectDB } from './api/v1/config'
+import { errorHandler } from './api/v1/middlewares'
 
 dotenv.config()
 
@@ -18,7 +19,7 @@ if (!process.env.PORT) {
 
 const PORT: number = parseInt(process.env.PORT as string, 10)
 
-const app = express()
+const app: Express = express()
 
 /**
  *  App Configuration
@@ -33,6 +34,7 @@ const corsOptions = {
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(errorHandler)
 
 /**
  * Server Activation
