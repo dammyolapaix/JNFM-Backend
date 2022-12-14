@@ -1,7 +1,7 @@
 import express from 'express'
 import {
   addMemberHandler,
-  deleteMemmberHandler,
+  deleteMemberHandler,
   editMemberHandler,
   getMembersHandler,
   getSingleMemberByIdHandler,
@@ -14,6 +14,6 @@ router
   .route('/:id')
   .get(getSingleMemberByIdHandler)
   .patch(editMemberHandler)
-  .delete(deleteMemmberHandler)
+  .delete(deleteMemberHandler)
 
 export default router

@@ -28,7 +28,6 @@ app.use(helmet())
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(routes)
-
 app.use(errorHandler)
 
 /**
