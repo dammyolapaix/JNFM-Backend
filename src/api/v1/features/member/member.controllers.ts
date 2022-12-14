@@ -75,14 +75,14 @@ export const editMemberHandler = asyncHandler(
   }
 )
 
-export const deleteMemmberHandler = asyncHandler(
+export const deleteMemberHandler = asyncHandler(
   async (
     req: Request<{ id: IMember['_id'] }, {}, {}, {}>,
     res: Response,
     next: NextFunction
   ) => {
-    const product = await deleteMember(req.params.id)
+    const member = await deleteMember(req.params.id)
 
-    res.status(200).json({ success: true, product })
+    res.status(200).json({ success: true, member })
   }
 )
