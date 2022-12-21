@@ -1,7 +1,7 @@
 import Member from './Member'
 import {
   addMemberHandler,
-  deleteMemmberHandler,
+  deleteMemberHandler,
   editMemberHandler,
   getMembersHandler,
   getSingleMemberByIdHandler,
@@ -32,7 +32,7 @@ export {
   getSingleMemberByIdHandler,
   addMemberHandler,
   editMemberHandler,
-  deleteMemmberHandler,
+  deleteMemberHandler,
   // Routes
   memberRoutes,
 }
