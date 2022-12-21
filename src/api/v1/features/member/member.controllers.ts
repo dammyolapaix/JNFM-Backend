@@ -69,6 +69,14 @@ export const editMemberHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
+    const { lastName, firstName, otherNames } = req.body
+
+    req.body.fullName = getFullName(
+      lastName && lastName,
+      firstName && firstName,
+      otherNames && otherNames
+    )
+
     const member = await editMember(req.params.id, req.body)
 
     if (!member) {
