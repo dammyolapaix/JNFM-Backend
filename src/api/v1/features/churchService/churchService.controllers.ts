@@ -10,10 +10,24 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IAttendance } from '../attendance'
 
 export const getChurchServicesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const churchServices = await getChurchServices()
+      .populate<{
+        attendances: IAttendance[]
+      }>({
+        path: 'attendances',
+        model: 'Attendance',
+        select: 'member',
+        populate: {
+          path: 'member',
+          model: 'Member',
+          select: 'fullName',
+        },
+      })
+      .sort('-date')
 
     return res
       .status(200)
@@ -27,7 +41,20 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const churchService = await getSingleChurchServiceById(req.params.id)
+    const churchService = await getSingleChurchServiceById(
+      req.params.id
+    ).populate<{
+      attendances: IAttendance[]
+    }>({
+      path: 'attendances',
+      model: 'Attendance',
+      select: 'member',
+      populate: {
+        path: 'member',
+        model: 'Member',
+        select: 'fullName',
+      },
+    })
 
     if (!churchService) {
       return next(
