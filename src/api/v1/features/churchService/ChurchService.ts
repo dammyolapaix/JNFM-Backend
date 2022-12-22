@@ -21,6 +21,12 @@ const ChurchServiceSchema = new Schema<IChurchService>(
   }
 )
 
+ChurchServiceSchema.virtual('attendances', {
+  ref: 'Attendance',
+  localField: '_id',
+  foreignField: 'churchService',
+})
+
 const ChurchService = model<IChurchService>(
   'ChurchService',
   ChurchServiceSchema
