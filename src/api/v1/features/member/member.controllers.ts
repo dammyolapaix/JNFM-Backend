@@ -3,6 +3,7 @@ import {
   addMember,
   deleteMember,
   editMember,
+  getFullName,
   getMembers,
   getSingleMemberById,
   IBaseMember,
@@ -48,6 +49,14 @@ export const addMemberHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
+    const { lastName, firstName, otherNames } = req.body
+
+    req.body.fullName = getFullName(
+      lastName,
+      firstName && firstName,
+      otherNames && otherNames
+    )
+
     const member = await addMember(req.body)
 
     return res.status(201).json({ success: true, member })
@@ -60,6 +69,14 @@ export const editMemberHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
+    const { lastName, firstName, otherNames } = req.body
+
+    req.body.fullName = getFullName(
+      lastName && lastName,
+      firstName && firstName,
+      otherNames && otherNames
+    )
+
     const member = await editMember(req.params.id, req.body)
 
     if (!member) {
