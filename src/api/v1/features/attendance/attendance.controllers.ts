@@ -10,6 +10,8 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IChurchService } from '../churchService'
+import { IMember } from '../member'
 
 export const getAttendancesHandler = asyncHandler(
   async (
@@ -17,16 +19,17 @@ export const getAttendancesHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    let query
+    const queryObject = { churchService: req.params.churchServiceId }
 
-    if (req.params.churchServiceId) {
-      const queryObject = { churchService: req.params.churchServiceId }
-      query = getAttendances(queryObject)
-    } else {
-      query = getAttendances()
-    }
-
-    const attendances = await query
+    const attendances = await getAttendances(
+      req.params.churchServiceId && queryObject
+    )
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+      })
+      .populate<{ member: IMember }>({
+        path: 'member',
+      })
 
     return res
       .status(200)
@@ -41,6 +44,12 @@ export const getSingleAttendanceByIdHandler = asyncHandler(
     next: NextFunction
   ) => {
     const attendance = await getSingleAttendanceById(req.params.id)
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+      })
+      .populate<{ member: IMember }>({
+        path: 'member',
+      })
 
     if (!attendance) {
       return next(

@@ -6,10 +6,9 @@ interface IAttendanceParams {
 
 export const getAttendances = (queryObject?: IAttendanceParams) => {
   if (queryObject) {
-    console.log(queryObject)
     return Attendance.find(queryObject)
   } else {
-    return Attendance.find()
+    return Attendance.find(queryObject)
   }
 }
 
