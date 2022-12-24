@@ -11,10 +11,16 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IAttendance } from '../attendance'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const members = await getMembers()
+    const members = await getMembers().populate<{
+      attendances: IAttendance[]
+    }>({
+      path: 'attendances',
+      model: 'Attendance',
+    })
 
     return res
       .status(200)
