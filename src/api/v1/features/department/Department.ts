@@ -11,8 +11,10 @@ const DepartmentSchema = new Schema<IDepartment>(
     },
     members: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Member',
+        member: {
+          type: Schema.Types.ObjectId,
+          ref: 'Member',
+        },
       },
     ],
   },

@@ -6,7 +6,10 @@
 import Department from './Department'
 
 //  Importing Interfaces
-import IDepartment, { IBaseDepartment } from './department.interfaces'
+import IDepartment, {
+  IBaseDepartment,
+  IReqDepartment,
+} from './department.interfaces'
 
 // Importing Services
 import {
@@ -24,6 +27,7 @@ import {
   editDepartmentHandler,
   getDepartmentsHandler,
   getSingleDepartmentByIdHandler,
+  addMemberToDepartmentHandler,
 } from './department.controllers'
 
 // Importing Routes
@@ -39,7 +43,7 @@ import departmentRoutes from './department.routes'
 export { Department }
 
 //  Exporting Interfaces
-export { IBaseDepartment, IDepartment }
+export { IBaseDepartment, IDepartment, IReqDepartment }
 
 // Exporting Services
 export {
@@ -57,6 +61,7 @@ export {
   editDepartmentHandler,
   getDepartmentsHandler,
   getSingleDepartmentByIdHandler,
+  addMemberToDepartmentHandler,
 }
 
 // Exporting Routes
