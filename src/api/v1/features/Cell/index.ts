@@ -26,6 +26,7 @@ import {
   getCellsHandler,
   getSingleCellByIdHandler,
   addMemberToCellHandler,
+  removeMemberFromCellHandler,
 } from './cell.controllers'
 
 // Importing Routes
@@ -61,6 +62,7 @@ export {
   getCellsHandler,
   getSingleCellByIdHandler,
   addMemberToCellHandler,
+  removeMemberFromCellHandler,
 }
 
 // Exporting Routes

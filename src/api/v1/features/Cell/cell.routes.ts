@@ -6,6 +6,7 @@ import {
   editCellHandler,
   getCellsHandler,
   getSingleCellByIdHandler,
+  removeMemberFromCellHandler,
 } from './index'
 
 const router = express.Router()
@@ -19,5 +20,6 @@ router
   .delete(deleteCellHandler)
 
 router.route('/:id/members/add').patch(addMemberToCellHandler)
+router.route('/:id/members/remove').patch(removeMemberFromCellHandler)
 
 export default router
