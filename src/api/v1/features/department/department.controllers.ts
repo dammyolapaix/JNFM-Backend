@@ -160,3 +160,55 @@ export const addMemberToDepartmentHandler = asyncHandler(
     res.status(200).json({ success: true, department })
   }
 )
+
+export const removeMemberFromDepartmentHandler = asyncHandler(
+  async (
+    req: Request<{ id: IDepartment['_id'] }, {}, IReqDepartment, {}>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { member } = req.body
+
+    const department = await getSingleDepartmentById(req.params.id)
+
+    const getMember = await getSingleMemberById(member)
+
+    if (!department) {
+      return next(
+        new ErrorResponse(
+          `Department with the id of ${req.params.id} not found`,
+          404
+        )
+      )
+    }
+
+    if (!getMember) {
+      return next(
+        new ErrorResponse(`Member with the id of ${member} not found`, 404)
+      )
+    }
+
+    const isNotAMember =
+      typeof department.members !== 'undefined' &&
+      department.members.filter((member) => member.member == req.body.member)
+        .length === 0
+
+    if (isNotAMember) {
+      return next(
+        new ErrorResponse(`This member is not in this department`, 400)
+      )
+    }
+
+    const memberIndex = department.members
+      ?.map((member) => member.member)
+      .indexOf(req.body.member)
+
+    typeof memberIndex !== 'undefined' &&
+      typeof department.members !== 'undefined' &&
+      department.members.splice(memberIndex, 1)
+
+    await department.save()
+
+    res.status(200).json({ success: true, department })
+  }
+)

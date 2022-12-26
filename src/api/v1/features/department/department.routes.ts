@@ -6,6 +6,7 @@ import {
   editDepartmentHandler,
   getDepartmentsHandler,
   getSingleDepartmentByIdHandler,
+  removeMemberFromDepartmentHandler,
 } from './index'
 
 const router = express.Router()
@@ -18,5 +19,6 @@ router
   .delete(deleteDepartmentHandler)
 
 router.route('/:id/members/add').patch(addMemberToDepartmentHandler)
+router.route('/:id/members/remove').patch(removeMemberFromDepartmentHandler)
 
 export default router

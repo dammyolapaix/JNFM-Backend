@@ -28,6 +28,7 @@ import {
   getDepartmentsHandler,
   getSingleDepartmentByIdHandler,
   addMemberToDepartmentHandler,
+  removeMemberFromDepartmentHandler,
 } from './department.controllers'
 
 // Importing Routes
@@ -62,6 +63,7 @@ export {
   getDepartmentsHandler,
   getSingleDepartmentByIdHandler,
   addMemberToDepartmentHandler,
+  removeMemberFromDepartmentHandler,
 }
 
 // Exporting Routes
