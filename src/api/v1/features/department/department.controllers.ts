@@ -199,9 +199,10 @@ export const removeMemberFromDepartmentHandler = asyncHandler(
       )
     }
 
+    // Added toString() method, to identifiy the values as string and avoid removing members that are not intended to remove
     const memberIndex = department.members
-      ?.map((member) => member.member)
-      .indexOf(req.body.member)
+      ?.map((member) => member.member.toString())
+      .indexOf(req.body.member.toString())
 
     typeof memberIndex !== 'undefined' &&
       typeof department.members !== 'undefined' &&
