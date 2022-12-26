@@ -1,11 +1,15 @@
-import { IBaseCell, ICell, Cell } from './index'
+import { IBaseCell, ICell, Cell, IQueryCell } from './index'
 
 export const getCells = () => {
   return Cell.find()
 }
 
-export const getSingleCellById = (CellId: ICell['_id']) => {
-  return Cell.findById(CellId)
+export const getSingleCellById = (cellId: ICell['_id']) => {
+  return Cell.findById(cellId)
+}
+
+export const getSingleCell = (cell: IQueryCell) => {
+  return Cell.findOne(cell)
 }
 
 export const addCell = (cell: IBaseCell) => {

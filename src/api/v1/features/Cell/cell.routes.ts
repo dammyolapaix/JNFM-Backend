@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   addCellHandler,
+  addMemberToCellHandler,
   deleteCellHandler,
   editCellHandler,
   getCellsHandler,
@@ -16,5 +17,7 @@ router
   .get(getSingleCellByIdHandler)
   .patch(editCellHandler)
   .delete(deleteCellHandler)
+
+router.route('/:id/members/add').patch(addMemberToCellHandler)
 
 export default router

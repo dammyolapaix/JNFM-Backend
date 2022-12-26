@@ -15,6 +15,7 @@ const CellSchema = new Schema<ICell>(
           type: Schema.Types.ObjectId,
           ref: 'Member',
           unique: true,
+          sparse: true,
         },
       },
     ],

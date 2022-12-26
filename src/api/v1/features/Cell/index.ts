@@ -6,7 +6,7 @@
 import Cell from './Cell'
 
 //  Importing Interfaces
-import ICell, { IBaseCell } from './cell.interface'
+import ICell, { IBaseCell, IReqCell, IQueryCell } from './cell.interfaces'
 
 // Importing Services
 import {
@@ -15,6 +15,7 @@ import {
   editCell,
   getCells,
   getSingleCellById,
+  getSingleCell,
 } from './cell.services'
 
 // Importing Controllers
@@ -24,6 +25,7 @@ import {
   editCellHandler,
   getCellsHandler,
   getSingleCellByIdHandler,
+  addMemberToCellHandler,
 } from './cell.controllers'
 
 // Importing Routes
@@ -39,10 +41,17 @@ import cellRoutes from './cell.routes'
 export { Cell }
 
 //  Exporting Interfaces
-export { IBaseCell, ICell }
+export { IBaseCell, ICell, IReqCell, IQueryCell }
 
 // Exporting Services
-export { addCell, deleteCell, editCell, getCells, getSingleCellById }
+export {
+  addCell,
+  deleteCell,
+  editCell,
+  getCells,
+  getSingleCellById,
+  getSingleCell,
+}
 
 // Exporting Controllers
 export {
@@ -51,6 +60,7 @@ export {
   editCellHandler,
   getCellsHandler,
   getSingleCellByIdHandler,
+  addMemberToCellHandler,
 }
 
 // Exporting Routes
