@@ -3,7 +3,7 @@ import { churchServiceRoutes } from '../features/churchService'
 import { memberRoutes } from '../features/member'
 import { attendanceRoutes } from '../features/attendance'
 import { departmentRoutes } from '../features/department'
-import { cellRoutes } from '../features/Cell'
+import { cellRoutes } from '../features/cell'
 
 const router = express.Router()
 
