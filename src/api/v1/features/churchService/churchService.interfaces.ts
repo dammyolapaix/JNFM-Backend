@@ -1,7 +1,9 @@
 import { Types } from 'mongoose'
+import { IChurchServiceType } from './churchServiceType'
 
 export interface IBaseChurchService {
   date: Date
+  churchServiceType: IChurchServiceType
   startsAt?: Date | undefined
   endsAt?: Date | undefined
 }

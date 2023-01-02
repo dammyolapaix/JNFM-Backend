@@ -2,7 +2,7 @@ import IChurchServiceType, {
   IBaseChurchServiceType,
 } from './churchServiceType.interfaces'
 
-import ChurchServiceType from './churchServiceType'
+import ChurchServiceType from './ChurchServiceType'
 
 import {
   addChurchServiceType,
