@@ -11,13 +11,17 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
+import { IChurchServiceType } from './churchServiceType'
 
 export const getChurchServicesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const churchServices = await getChurchServices()
-      .populate<{
-        attendances: IAttendance[]
-      }>({
+      .populate<{ churchServiceType: IChurchServiceType[] }>({
+        path: 'churchServiceType',
+        model: 'ChurchServiceType',
+        select: 'name',
+      })
+      .populate<{ attendances: IAttendance[] }>({
         path: 'attendances',
         model: 'Attendance',
         select: 'member',
@@ -41,20 +45,22 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const churchService = await getSingleChurchServiceById(
-      req.params.id
-    ).populate<{
-      attendances: IAttendance[]
-    }>({
-      path: 'attendances',
-      model: 'Attendance',
-      select: 'member',
-      populate: {
-        path: 'member',
-        model: 'Member',
-        select: 'fullName',
-      },
-    })
+    const churchService = await getSingleChurchServiceById(req.params.id)
+      .populate<{ churchServiceType: IChurchServiceType[] }>({
+        path: 'churchServiceType',
+        model: 'ChurchServiceType',
+        select: 'name',
+      })
+      .populate<{ attendances: IAttendance[] }>({
+        path: 'attendances',
+        model: 'Attendance',
+        select: 'member',
+        populate: {
+          path: 'member',
+          model: 'Member',
+          select: 'fullName',
+        },
+      })
 
     if (!churchService) {
       return next(
