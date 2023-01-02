@@ -11,10 +11,24 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IAttendance } from '../attendance'
+import { IDepartment } from '../department'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const members = await getMembers()
+      .populate<{
+        attendances: IAttendance[]
+      }>({
+        path: 'attendances',
+        model: 'Attendance',
+      })
+      .populate<{
+        departments: IDepartment[]
+      }>({
+        path: 'departments',
+        model: 'Department',
+      })
 
     return res
       .status(200)
@@ -29,6 +43,18 @@ export const getSingleMemberByIdHandler = asyncHandler(
     next: NextFunction
   ) => {
     const member = await getSingleMemberById(req.params.id)
+      .populate<{
+        attendances: IAttendance[]
+      }>({
+        path: 'attendances',
+        model: 'Attendance',
+      })
+      .populate<{
+        departments: IDepartment[]
+      }>({
+        path: 'departments',
+        model: 'Department',
+      })
 
     if (!member) {
       return next(
