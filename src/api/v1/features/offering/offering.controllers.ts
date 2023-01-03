@@ -11,20 +11,24 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
+import { IOfferingType } from './offeringType'
 
 export const getOfferingsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const offerings = await getOfferings().populate<{
-      churchService: IChurchService
-    }>({
-      path: 'churchService',
-      select: 'date',
-      populate: {
-        path: 'churchServiceType',
-        model: 'churchServiceType',
+    const offerings = await getOfferings()
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+        select: 'date',
+        populate: {
+          path: 'churchServiceType',
+          model: 'ChurchServiceType',
+          select: 'name',
+        },
+      })
+      .populate<{ offeringType: IOfferingType }>({
+        path: 'offeringType',
         select: 'name',
-      },
-    })
+      })
 
     return res
       .status(200)
@@ -38,17 +42,20 @@ export const getSingleOfferingByIdHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const offering = await getSingleOfferingById(req.params.id).populate<{
-      churchService: IChurchService
-    }>({
-      path: 'churchService',
-      select: 'date',
-      populate: {
-        path: 'churchServiceType',
-        model: 'churchServiceType',
+    const offering = await getSingleOfferingById(req.params.id)
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+        select: 'date',
+        populate: {
+          path: 'churchServiceType',
+          model: 'ChurchServiceType',
+          select: 'name',
+        },
+      })
+      .populate<{ offeringType: IOfferingType }>({
+        path: 'offeringType',
         select: 'name',
-      },
-    })
+      })
 
     if (!offering) {
       return next(
