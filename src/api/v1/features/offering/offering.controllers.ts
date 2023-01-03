@@ -10,7 +10,6 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
-import { getSingleMemberById, IMember } from '../member'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
 
 export const getOfferingsHandler = asyncHandler(
@@ -69,7 +68,7 @@ export const getSingleOfferingByIdHandler = asyncHandler(
 
 export const addOfferingHandler = asyncHandler(
   async (
-    req: Request<{}, {}, IOffering, {}>,
+    req: Request<{}, {}, IBaseOffering, {}>,
     res: Response,
     next: NextFunction
   ) => {
