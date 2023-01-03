@@ -16,6 +16,11 @@ const OfferingSchema = new Schema<IOffering>(
       ref: 'ChurchService',
       required: [true, 'The Church Service is required'],
     },
+    offeringType: {
+      type: Schema.Types.ObjectId,
+      ref: 'OfferingType',
+      required: [true, 'The type of offering is required'],
+    },
   },
   {
     timestamps: true,
