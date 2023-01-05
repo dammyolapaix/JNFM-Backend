@@ -1,7 +1,13 @@
 import { IBaseOffering, IOffering, Offering } from './index'
 
-export const getOfferings = () => {
-  return Offering.find()
+export const getOfferings = (queryObject?: {
+  churchService: IOffering['churchService']
+}) => {
+  if (queryObject) {
+    return Offering.find(queryObject)
+  } else {
+    return Offering.find()
+  }
 }
 
 export const getSingleOfferingById = (offeringId: IOffering['_id']) => {

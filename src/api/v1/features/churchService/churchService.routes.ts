@@ -1,5 +1,6 @@
 import express from 'express'
 import { attendanceRoutes } from '../attendance'
+import { offeringRoutes } from '../offering'
 import {
   addChurchServiceHandler,
   deleteChurchServiceHandler,
@@ -12,6 +13,7 @@ const router = express.Router()
 
 // Re-route to other resource routers
 router.use('/:churchServiceId/attendances', attendanceRoutes)
+router.use('/:churchServiceId/offerings', offeringRoutes)
 
 router.route('/').get(getChurchServicesHandler).post(addChurchServiceHandler)
 

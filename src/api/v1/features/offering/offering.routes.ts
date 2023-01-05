@@ -7,7 +7,7 @@ import {
   getSingleOfferingByIdHandler,
 } from './index'
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 router.route('/').get(getOfferingsHandler).post(addOfferingHandler)
 

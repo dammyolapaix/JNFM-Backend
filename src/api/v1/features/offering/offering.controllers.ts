@@ -14,8 +14,16 @@ import { getSingleChurchServiceById, IChurchService } from '../churchService'
 import { IOfferingType } from './offeringType'
 
 export const getOfferingsHandler = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const offerings = await getOfferings()
+  async (
+    req: Request<{ churchServiceId: IOffering['churchService'] }, {}, {}, {}>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const queryObject = { churchService: req.params.churchServiceId }
+
+    const offerings = await getOfferings(
+      req.params.churchServiceId && queryObject
+    )
       .populate<{ churchService: IChurchService }>({
         path: 'churchService',
         select: 'date',
@@ -75,10 +83,20 @@ export const getSingleOfferingByIdHandler = asyncHandler(
 
 export const addOfferingHandler = asyncHandler(
   async (
-    req: Request<{}, {}, IBaseOffering, {}>,
+    req: Request<
+      { churchServiceId: IOffering['churchService'] },
+      {},
+      IBaseOffering,
+      {}
+    >,
     res: Response,
     next: NextFunction
   ) => {
+    const { churchServiceId } = req.params
+    if (churchServiceId) {
+      req.body.churchService = churchServiceId
+    }
+
     const { churchService } = req.body
 
     const offering = await addOffering(req.body)
