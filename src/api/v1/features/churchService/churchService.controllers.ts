@@ -12,6 +12,7 @@ import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
 import { IChurchServiceType } from './churchServiceType'
+import { IOffering, Offering } from '../offering'
 
 export const getChurchServicesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -31,11 +32,17 @@ export const getChurchServicesHandler = asyncHandler(
           select: 'fullName',
         },
       })
+      .populate<{ offerings: IOffering[] }>({
+        path: 'offerings',
+        model: 'Offering',
+      })
       .sort('-date')
 
-    return res
-      .status(200)
-      .json({ success: true, count: churchServices.length, churchServices })
+    return res.status(200).json({
+      success: true,
+      count: churchServices.length,
+      churchServices,
+    })
   }
 )
 
@@ -61,6 +68,26 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
           select: 'fullName',
         },
       })
+      .populate<{ offerings: IOffering[] }>({
+        path: 'offerings',
+        model: 'Offering',
+        select: 'amount offeringType',
+        populate: {
+          path: 'offeringType',
+          model: 'OfferingType',
+          select: 'name',
+        },
+      })
+
+    const offering = await Offering.aggregate([
+      { $match: { churchService: churchService && churchService._id } },
+      {
+        $group: {
+          _id: '$churchService',
+          totalOfferings: { $sum: '$amount' },
+        },
+      },
+    ])
 
     if (!churchService) {
       return next(
@@ -71,7 +98,11 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
       )
     }
 
-    return res.status(200).json({ success: true, churchService })
+    return res.status(200).json({
+      success: true,
+      totalOfferings: offering[0].totalOfferings,
+      churchService,
+    })
   }
 )
 

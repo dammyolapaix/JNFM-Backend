@@ -38,9 +38,20 @@ export const getOfferingsHandler = asyncHandler(
         select: 'name',
       })
 
+    const totalOfferings = offerings.reduce(
+      (accumulatedOfferings, currentOffering) =>
+        accumulatedOfferings + currentOffering.amount,
+      0
+    )
+
     return res
       .status(200)
-      .json({ success: true, count: offerings.length, offerings })
+      .json({
+        success: true,
+        count: offerings.length,
+        totalOfferings,
+        offerings,
+      })
   }
 )
 
