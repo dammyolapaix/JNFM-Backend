@@ -16,6 +16,11 @@ const ExpenditureSchema = new Schema<IExpenditure>(
       trim: true,
       required: [true, 'The naration is required'],
     },
+    expenditureCategory: {
+      type: Schema.Types.ObjectId,
+      ref: 'ExpenditureCategory',
+      required: [true, 'The category is required'],
+    },
     churchService: {
       type: Schema.Types.ObjectId,
       ref: 'ChurchService',
