@@ -9,7 +9,7 @@ import {
   IOffering,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import { ErrorResponse } from '../../utils'
+import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
 import { IOfferingType } from './offeringType'
 
@@ -44,14 +44,12 @@ export const getOfferingsHandler = asyncHandler(
       0
     )
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        count: offerings.length,
-        totalOfferings,
-        offerings,
-      })
+    return res.status(200).json({
+      success: true,
+      count: offerings.length,
+      totalOfferings,
+      offerings,
+    })
   }
 )
 
@@ -109,6 +107,8 @@ export const addOfferingHandler = asyncHandler(
     }
 
     const { churchService } = req.body
+
+    req.body.amount = changeToLowerDenomination(req.body.amount)
 
     const offering = await addOffering(req.body)
 
