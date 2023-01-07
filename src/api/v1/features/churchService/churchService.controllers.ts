@@ -100,7 +100,7 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
 
     return res.status(200).json({
       success: true,
-      totalOfferings: offering[0].totalOfferings,
+      totalOfferings: offering.length === 0 ? 0 : offering[0].totalOfferings,
       churchService,
     })
   }
