@@ -11,6 +11,7 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
+import { IExpenditureCategory } from './expenditureCategory'
 
 export const getExpendituresHandler = asyncHandler(
   async (
@@ -27,15 +28,22 @@ export const getExpendituresHandler = asyncHandler(
 
     const expenditures = await getExpenditures(
       req.params.churchServiceId && queryObject
-    ).populate<{ churchService: IChurchService }>({
-      path: 'churchService',
-      select: 'date',
-      populate: {
-        path: 'churchServiceType',
-        model: 'ChurchServiceType',
+    )
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+        select: 'date',
+        model: 'ChurchService',
+        populate: {
+          path: 'churchServiceType',
+          model: 'ChurchServiceType',
+          select: 'name',
+        },
+      })
+      .populate<{ expenditureCategory: IExpenditureCategory }>({
+        path: 'expenditureCategory',
         select: 'name',
-      },
-    })
+        model: 'ExpenditureCategory',
+      })
 
     const totalExpenditures = expenditures.reduce(
       (accumulatedExpenditures, currentExpenditure) =>
@@ -58,17 +66,22 @@ export const getSingleExpenditureByIdHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const expenditure = await getSingleExpenditureById(req.params.id).populate<{
-      churchService: IChurchService
-    }>({
-      path: 'churchService',
-      select: 'date',
-      populate: {
-        path: 'churchServiceType',
-        model: 'ChurchServiceType',
+    const expenditure = await getSingleExpenditureById(req.params.id)
+      .populate<{ churchService: IChurchService }>({
+        path: 'churchService',
+        select: 'date',
+        model: 'ChurchService',
+        populate: {
+          path: 'churchServiceType',
+          model: 'ChurchServiceType',
+          select: 'name',
+        },
+      })
+      .populate<{ expenditureCategory: IExpenditureCategory }>({
+        path: 'expenditureCategory',
         select: 'name',
-      },
-    })
+        model: 'ExpenditureCategory',
+      })
 
     if (!expenditure) {
       return next(
