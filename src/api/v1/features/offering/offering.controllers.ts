@@ -13,6 +13,7 @@ import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
 import { IOfferingType } from './offeringType'
 import { addIncome, IBaseIncome } from '../income'
+import { addCashBook, IBaseCashBook } from '../cashBook'
 
 export const getOfferingsHandler = asyncHandler(
   async (
@@ -126,6 +127,8 @@ export const addOfferingHandler = asyncHandler(
       }
     }
 
+    const { date, amount, _id } = offering
+
     const income: IBaseIncome = {
       amount: offering.amount,
       date: offering.date,
@@ -135,7 +138,18 @@ export const addOfferingHandler = asyncHandler(
       },
     }
 
+    const cashBook: IBaseCashBook = {
+      date,
+      amount,
+      naration: 'Offering',
+      account: {
+        offering: _id,
+      },
+      debitCredit: 'Debit',
+    }
+
     await addIncome(income)
+    await addCashBook(cashBook)
 
     return res.status(201).json({ success: true, offering })
   }
