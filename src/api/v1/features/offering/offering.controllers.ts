@@ -12,6 +12,7 @@ import { asyncHandler } from '../../middlewares'
 import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
 import { IOfferingType } from './offeringType'
+import { addIncome, IBaseIncome } from '../income'
 
 export const getOfferingsHandler = asyncHandler(
   async (
@@ -124,6 +125,17 @@ export const addOfferingHandler = asyncHandler(
         )
       }
     }
+
+    const income: IBaseIncome = {
+      amount: offering.amount,
+      date: offering.date,
+      naration: 'Offering',
+      source: {
+        offering: offering._id,
+      },
+    }
+
+    await addIncome(income)
 
     return res.status(201).json({ success: true, offering })
   }
