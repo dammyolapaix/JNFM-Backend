@@ -12,6 +12,7 @@ import { offeringRoutes } from '../features/offering'
 import { offeringTypeRoutes } from '../features/offering/offeringType'
 import { expenditureRoutes } from '../features/expenditure'
 import { expenditureCategoryRoutes } from '../features/expenditure/expenditureCategory'
+import { incomeRoutes } from '../features/income'
 
 const router = express.Router()
 
@@ -22,6 +23,7 @@ router.use('/api/v1/churchServiceTypes', churchServiceTypeRoutes)
 router.use('/api/v1/expenditures', expenditureRoutes)
 router.use('/api/v1/expenditureCategories', expenditureCategoryRoutes)
 router.use('/api/v1/departments', departmentRoutes)
+router.use('/api/v1/incomes', incomeRoutes)
 router.use('/api/v1/members', memberRoutes)
 router.use('/api/v1/offerings', offeringRoutes)
 router.use('/api/v1/offeringTypes', offeringTypeRoutes)
