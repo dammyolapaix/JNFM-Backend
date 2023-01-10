@@ -4,18 +4,13 @@ import { ISpecialContribution } from '../specialContribution'
 import { ITithe } from '../tithe'
 import { IWelfare } from '../welfare'
 
-enum debitCredit {
-  Debit = 'Debit',
-  Credit = 'Credit',
-}
-
 export interface IBaseCashBook {
   date: Date
   amount: number
   naration: string
   pvNumber?: string
   chequeNumber?: string
-  account: {
+  account?: {
     offering?: IOffering | IOffering['_id'] | undefined
     welfare?: IWelfare | IWelfare['_id'] | undefined
     tithe?: ITithe | ITithe['_id'] | undefined
@@ -24,7 +19,7 @@ export interface IBaseCashBook {
       | ISpecialContribution['_id']
       | undefined
   }
-  debitCredit: debitCredit
+  debitCredit: 'Credit' | 'Debit'
   // balance: number
 }
 
