@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
+  CashBook,
   deleteCashBook,
   editCashBook,
   getCashBooks,
@@ -10,10 +11,15 @@ import {
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IOffering } from '../offering'
 
 export const getCashBooksHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const cashBooks = await getCashBooks()
+    const cashBooks = await getCashBooks().populate<{ offering: IOffering }>({
+      path: 'account.offering',
+      model: 'Offering',
+      select: 'churchService',
+    })
 
     return res.status(200).json({
       success: true,
@@ -29,7 +35,13 @@ export const getSingleCashBookByIdHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const cashBook = await getSingleCashBookById(req.params.id)
+    const cashBook = await getSingleCashBookById(req.params.id).populate<{
+      offering: IOffering
+    }>({
+      path: 'account.offering',
+      model: 'Offering',
+      select: 'churchService',
+    })
 
     if (!cashBook) {
       return next(
