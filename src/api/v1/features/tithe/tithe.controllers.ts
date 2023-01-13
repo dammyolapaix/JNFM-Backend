@@ -9,7 +9,7 @@ import {
   IReqTithe,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import { ErrorResponse } from '../../utils'
+import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleMemberById, IMember } from '../member'
 
 export const getTithesHandler = asyncHandler(
@@ -59,6 +59,8 @@ export const addTitheHandler = asyncHandler(
     next: NextFunction
   ) => {
     const { member } = req.body
+
+    req.body.amount = changeToLowerDenomination(req.body.amount)
 
     const tithe = await addTithe(req.body)
 
