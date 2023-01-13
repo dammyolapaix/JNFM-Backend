@@ -12,6 +12,7 @@ import { asyncHandler } from '../../middlewares'
 import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleChurchServiceById, IChurchService } from '../churchService'
 import { IExpenditureCategory } from './expenditureCategory'
+import { addCashBook, IBaseCashBook } from '../cashBook'
 
 export const getExpendituresHandler = asyncHandler(
   async (
@@ -133,6 +134,15 @@ export const addExpenditureHandler = asyncHandler(
         )
       }
     }
+
+    const cashBook: IBaseCashBook = {
+      date: expenditure.date,
+      amount: -expenditure.amount,
+      naration: expenditure.naration,
+      debitCredit: 'Credit',
+    }
+
+    await addCashBook(cashBook)
 
     return res.status(201).json({ success: true, expenditure })
   }

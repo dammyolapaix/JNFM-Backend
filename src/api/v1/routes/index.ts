@@ -13,11 +13,13 @@ import { offeringTypeRoutes } from '../features/offering/offeringType'
 import { expenditureRoutes } from '../features/expenditure'
 import { expenditureCategoryRoutes } from '../features/expenditure/expenditureCategory'
 import { incomeRoutes } from '../features/income'
+import { cashBookRoutes } from '../features/cashBook'
 
 const router = express.Router()
 
 router.use('/api/v1/attendances', attendanceRoutes)
 router.use('/api/v1/cells', cellRoutes)
+router.use('/api/v1/cashBooks', cashBookRoutes)
 router.use('/api/v1/churchServices', churchServiceRoutes)
 router.use('/api/v1/churchServiceTypes', churchServiceTypeRoutes)
 router.use('/api/v1/expenditures', expenditureRoutes)
