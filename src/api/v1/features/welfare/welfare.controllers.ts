@@ -12,6 +12,8 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleMemberById, IMember } from '../member'
+import { addIncome } from '../income'
+import { addCashBook } from '../cashBook'
 
 export const getWelfaresHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -74,6 +76,21 @@ export const addWelfareHandler = asyncHandler(
     }
 
     const welfare = await addWelfare(req.body)
+
+    const { _id, date, amount } = welfare
+
+    const income = {
+      date,
+      amount,
+      naration: `Tithe paid by ${getMember.fullName}`,
+      source: { welfare: _id },
+    }
+
+    await addIncome(income)
+
+    const { naration, source: account } = income
+
+    await addCashBook({ date, amount, naration, account, debitCredit: 'Debit' })
 
     return res.status(201).json({ success: true, welfare })
   }
