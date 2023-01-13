@@ -10,13 +10,13 @@ import {
   IReqWelfare,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import { ErrorResponse } from '../../utils'
+import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleMemberById, IMember } from '../member'
 
 export const getWelfaresHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const welfares = await getWelfares().populate<{ member: IMember }>({
-      path: 'members',
+      path: 'member',
       select: 'fullName',
     })
 
@@ -63,7 +63,7 @@ export const addWelfareHandler = asyncHandler(
   ) => {
     const { member } = req.body
 
-    const welfare = await addWelfare(req.body)
+    req.body.amount = changeToLowerDenomination(req.body.amount)
 
     const getMember = await getSingleMemberById(member)
 
@@ -72,6 +72,8 @@ export const addWelfareHandler = asyncHandler(
         new ErrorResponse(`Member with the id of ${member} not found`, 404)
       )
     }
+
+    const welfare = await addWelfare(req.body)
 
     return res.status(201).json({ success: true, welfare })
   }
