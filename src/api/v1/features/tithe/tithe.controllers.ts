@@ -11,6 +11,8 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleMemberById, IMember } from '../member'
+import { addIncome } from '../income'
+import { addCashBook } from '../cashBook'
 
 export const getTithesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -71,6 +73,21 @@ export const addTitheHandler = asyncHandler(
         new ErrorResponse(`Member with the id of ${member} not found`, 404)
       )
     }
+
+    const { _id, date, amount } = tithe
+
+    const income = {
+      date,
+      amount,
+      naration: `Tithe paid by ${getMember.fullName}`,
+      source: { tithe: _id },
+    }
+
+    await addIncome(income)
+
+    const { naration, source: account } = income
+
+    await addCashBook({ date, amount, naration, account, debitCredit: 'Debit' })
 
     return res.status(201).json({ success: true, tithe })
   }
