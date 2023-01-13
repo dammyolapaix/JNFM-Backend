@@ -82,7 +82,7 @@ export const addWelfareHandler = asyncHandler(
     const income = {
       date,
       amount,
-      naration: `Tithe paid by ${getMember.fullName}`,
+      naration: `Welfare paid by ${getMember.fullName}`,
       source: { welfare: _id },
     }
 
