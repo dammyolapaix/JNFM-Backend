@@ -83,6 +83,12 @@ MemberSchema.virtual('attendances', {
   foreignField: 'member',
 })
 
+MemberSchema.virtual('departments', {
+  ref: 'Department',
+  localField: '_id',
+  foreignField: 'members.member',
+})
+
 const Member = model<IMember>('Member', MemberSchema)
 
 export default Member

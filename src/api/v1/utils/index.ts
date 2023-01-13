@@ -1,3 +1,7 @@
 import ErrorResponse from './errorResponse.utils'
+import {
+  changeToHigherDenomination,
+  changeToLowerDenomination,
+} from './changeDenomination.utils'
 
-export { ErrorResponse }
+export { ErrorResponse, changeToHigherDenomination, changeToLowerDenomination }
