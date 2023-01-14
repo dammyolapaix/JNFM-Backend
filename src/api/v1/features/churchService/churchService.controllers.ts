@@ -13,6 +13,7 @@ import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
 import { IChurchServiceType } from './churchServiceType'
 import { IOffering, Offering } from '../offering'
+import { IExpenditure } from '../expenditure'
 
 export const getChurchServicesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -35,6 +36,10 @@ export const getChurchServicesHandler = asyncHandler(
       .populate<{ offerings: IOffering[] }>({
         path: 'offerings',
         model: 'Offering',
+      })
+      .populate<{ expenditures: IExpenditure[] }>({
+        path: 'expenditures',
+        model: 'Expenditure',
       })
       .sort('-date')
 
@@ -77,6 +82,10 @@ export const getSingleChurchServiceByIdHandler = asyncHandler(
           model: 'OfferingType',
           select: 'name',
         },
+      })
+      .populate<{ expenditures: IExpenditure[] }>({
+        path: 'expenditures',
+        model: 'Expenditure',
       })
 
     const offering = await Offering.aggregate([
