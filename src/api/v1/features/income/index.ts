@@ -15,6 +15,7 @@ import {
   editIncome,
   getIncomes,
   getSingleIncomeById,
+  getTotalIncome,
 } from './income.services'
 
 // Importing Controllers
@@ -42,7 +43,14 @@ export { Income }
 export { IBaseIncome, IIncome }
 
 // Exporting Services
-export { addIncome, deleteIncome, editIncome, getIncomes, getSingleIncomeById }
+export {
+  addIncome,
+  deleteIncome,
+  editIncome,
+  getIncomes,
+  getSingleIncomeById,
+  getTotalIncome,
+}
 
 // Exporting Controllers
 export {

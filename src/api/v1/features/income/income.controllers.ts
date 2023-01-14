@@ -5,6 +5,7 @@ import {
   editIncome,
   getIncomes,
   getSingleIncomeById,
+  getTotalIncome,
   IBaseIncome,
   IIncome,
 } from './index'
@@ -20,9 +21,12 @@ export const getIncomesHandler = asyncHandler(
       select: 'churchService',
     })
 
+    const totalIncome = await getTotalIncome()
+
     return res.status(200).json({
       success: true,
       count: incomes.length,
+      totalIncome,
       incomes,
     })
   }
