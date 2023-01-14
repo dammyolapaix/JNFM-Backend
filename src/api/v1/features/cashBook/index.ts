@@ -15,6 +15,7 @@ import {
   editCashBook,
   getCashBooks,
   getSingleCashBookById,
+  getTotalCashBook,
 } from './cashBook.services'
 
 // Importing Controllers
@@ -48,6 +49,7 @@ export {
   editCashBook,
   getCashBooks,
   getSingleCashBookById,
+  getTotalCashBook,
 }
 
 // Exporting Controllers

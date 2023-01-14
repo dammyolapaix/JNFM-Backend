@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
-  CashBook,
   deleteCashBook,
   editCashBook,
   getCashBooks,
   getSingleCashBookById,
+  getTotalCashBook,
   IBaseCashBook,
   ICashBook,
 } from './index'
@@ -21,9 +21,12 @@ export const getCashBooksHandler = asyncHandler(
       select: 'churchService',
     })
 
+    const totalCashBook = await getTotalCashBook()
+
     return res.status(200).json({
       success: true,
       count: cashBooks.length,
+      totalCashBook,
       cashBooks,
     })
   }
