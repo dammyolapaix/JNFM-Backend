@@ -25,3 +25,38 @@ export const editCashBook = (
 export const deleteCashBook = (cashBookId: ICashBook['_id']) => {
   return CashBook.findByIdAndDelete(cashBookId)
 }
+
+export const getTotalCashBook = () =>
+  CashBook.aggregate([
+    {
+      $facet: {
+        balance: [{ $group: { _id: null, balance: { $sum: '$amount' } } }],
+        totalIncome: [
+          {
+            $match: {
+              debitCredit: 'Debit',
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalIncome: { $sum: '$amount' },
+            },
+          },
+        ],
+        totalExpenditure: [
+          {
+            $match: {
+              debitCredit: 'Credit',
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalExpenditure: { $sum: '$amount' },
+            },
+          },
+        ],
+      },
+    },
+  ])
