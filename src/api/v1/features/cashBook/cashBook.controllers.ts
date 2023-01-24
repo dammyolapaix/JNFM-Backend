@@ -12,7 +12,12 @@ import {
   ICashBookQuery,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import { ErrorResponse } from '../../utils'
+import {
+  ErrorResponse,
+  getPaginationOptions,
+  getPaginationResult,
+  getQueryStr,
+} from '../../utils'
 import { IOffering } from '../offering'
 
 export const getCashBooksHandler = asyncHandler(
@@ -24,18 +29,7 @@ export const getCashBooksHandler = asyncHandler(
     let query
 
     if (req.query) {
-      const reqQuery = { ...req.query }
-
-      let queryStr = JSON.stringify(req.query)
-
-      queryStr = queryStr.replace(
-        /\b(gt|gte|lt|lte|eq|in)\b/g,
-        (match) => `$${match}`
-      )
-
-      // Fields to exclude in the query
-      const removeFields = ['select', 'sort', 'page', 'limit']
-      removeFields.forEach((field) => delete reqQuery[field])
+      const queryStr = getQueryStr(req.query)
 
       if (req.query.date) {
         req.query.date = new Date(req.query.date)
@@ -73,11 +67,12 @@ export const getCashBooksHandler = asyncHandler(
     }
 
     // Pagination
-    const page = parseInt(req.query.page, 10) || 1
-    const limit = parseInt(req.query.limit, 10) || 5
-    const startIndex = (page - 1) * limit
-    const endIndex = page * limit
-    const totalDocument = await CashBook.countDocuments()
+    const paginationOptions = getPaginationOptions(
+      req.query.page,
+      req.query.limit
+    )
+
+    const { page, limit, startIndex, endIndex } = paginationOptions
 
     query = query.skip(startIndex).limit(limit)
 
@@ -85,22 +80,15 @@ export const getCashBooksHandler = asyncHandler(
 
     const totalCashBook = await getTotalCashBook()
 
-    // Pagination result
-    const pagination = {}
-    if (endIndex < totalDocument) {
-      // @ts-ignore
-      pagination.next = {
-        page: page + 1,
-        limit,
-      }
-    }
-    if (startIndex > 0) {
-      // @ts-ignore
-      pagination.prev = {
-        page: page - 1,
-        limit,
-      }
-    }
+    const totalDocument = await CashBook.countDocuments()
+
+    const pagination = getPaginationResult(
+      page,
+      limit,
+      startIndex,
+      endIndex,
+      totalDocument
+    )
 
     return res.status(200).json({
       success: true,
