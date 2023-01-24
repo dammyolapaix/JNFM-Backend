@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
+  CashBook,
   deleteCashBook,
   editCashBook,
   getCashBooks,
@@ -8,18 +9,50 @@ import {
   getTotalCashBook,
   IBaseCashBook,
   ICashBook,
+  ICashBookQuery,
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IOffering } from '../offering'
 
 export const getCashBooksHandler = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const cashBooks = await getCashBooks().populate<{ offering: IOffering }>({
-      path: 'account.offering',
-      model: 'Offering',
-      select: 'churchService',
-    })
+  async (
+    req: Request<{}, {}, {}, ICashBookQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    let query
+
+    if (req.query) {
+      let queryStr = JSON.stringify(req.query)
+
+      queryStr = queryStr.replace(
+        /\b(gt|gte|lt|lte|eq|in)\b/g,
+        (match) => `$${match}`
+      )
+
+      if (req.query.date) {
+        req.query.date = new Date(req.query.date)
+      }
+
+      query = getCashBooks(JSON.parse(queryStr)).populate<{
+        offering: IOffering
+      }>({
+        path: 'account.offering',
+        model: 'Offering',
+        select: 'churchService',
+      })
+    } else {
+      query = getCashBooks().populate<{
+        offering: IOffering
+      }>({
+        path: 'account.offering',
+        model: 'Offering',
+        select: 'churchService',
+      })
+    }
+
+    const cashBooks = await query
 
     const totalCashBook = await getTotalCashBook()
 

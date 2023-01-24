@@ -1,8 +1,18 @@
 import { Aggregate } from 'mongoose'
-import { IBaseCashBook, ICashBook, CashBook, ITotalCashBook } from './index'
+import {
+  IBaseCashBook,
+  ICashBook,
+  CashBook,
+  ITotalCashBook,
+  ICashBookQuery,
+} from './index'
 
-export const getCashBooks = () => {
-  return CashBook.find()
+export const getCashBooks = (query?: ICashBookQuery) => {
+  if (query) {
+    return CashBook.find(query)
+  } else {
+    return CashBook.find()
+  }
 }
 
 export const getSingleCashBookById = (cashBookId: ICashBook['_id']) => {

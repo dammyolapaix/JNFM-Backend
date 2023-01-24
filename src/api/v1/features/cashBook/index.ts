@@ -6,7 +6,11 @@
 import CashBook from './CashBook'
 
 //  Importing Interfaces
-import ICashBook, { IBaseCashBook, ITotalCashBook } from './cashBook.interfaces'
+import ICashBook, {
+  IBaseCashBook,
+  ITotalCashBook,
+  ICashBookQuery,
+} from './cashBook.interfaces'
 
 // Importing Services
 import {
@@ -40,7 +44,7 @@ import cashBookRoutes from './cashBook.routes'
 export { CashBook }
 
 //  Exporting Interfaces
-export { IBaseCashBook, ICashBook, ITotalCashBook }
+export { IBaseCashBook, ICashBook, ITotalCashBook, ICashBookQuery }
 
 // Exporting Services
 export {

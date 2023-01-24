@@ -45,3 +45,9 @@ export interface ITotalCashBook {
   totalIncome: ITotalIncome[]
   totalExpenditure: ITotalExpenditure[]
 }
+
+export interface ICashBookQuery {
+  date?: Date
+  amount?: number
+  debitCredit?: 'Credit' | 'Debit'
+}
