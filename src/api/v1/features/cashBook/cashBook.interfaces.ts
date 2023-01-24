@@ -51,4 +51,5 @@ export interface ICashBookQuery {
   amount?: number
   debitCredit?: 'Credit' | 'Debit'
   select?: string
+  sort?: string
 }

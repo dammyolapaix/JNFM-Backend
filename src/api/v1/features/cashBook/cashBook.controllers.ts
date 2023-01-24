@@ -33,7 +33,7 @@ export const getCashBooksHandler = asyncHandler(
       )
 
       // Fields to exclude in the query
-      const removeFields = ['select']
+      const removeFields = ['select', 'sort']
       removeFields.forEach((field) => delete reqQuery[field])
 
       if (req.query.date) {
@@ -57,9 +57,18 @@ export const getCashBooksHandler = asyncHandler(
       })
     }
 
+    // Selecting specific field(s)
     if (req.query.select) {
       const fields = req.query.select.split(',').join(' ')
       query = query.select(fields)
+    }
+
+    // Sort by field(s)
+    if (req.query.sort) {
+      const sortedBy = req.query.sort.split(',').join(' ')
+      query = query.sort(sortedBy)
+    } else {
+      query = query.sort('-createdAt')
     }
 
     const cashBooks = await query
