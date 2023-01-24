@@ -1,4 +1,5 @@
-import { IBaseCashBook, ICashBook, CashBook } from './index'
+import { Aggregate } from 'mongoose'
+import { IBaseCashBook, ICashBook, CashBook, ITotalCashBook } from './index'
 
 export const getCashBooks = () => {
   return CashBook.find()
@@ -26,7 +27,7 @@ export const deleteCashBook = (cashBookId: ICashBook['_id']) => {
   return CashBook.findByIdAndDelete(cashBookId)
 }
 
-export const getTotalCashBook = () =>
+export const getTotalCashBook = (): Aggregate<ITotalCashBook[]> =>
   CashBook.aggregate([
     {
       $facet: {
