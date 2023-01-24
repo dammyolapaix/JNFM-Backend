@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
+  CashBook,
   deleteCashBook,
   editCashBook,
   getCashBooks,
@@ -33,7 +34,7 @@ export const getCashBooksHandler = asyncHandler(
       )
 
       // Fields to exclude in the query
-      const removeFields = ['select', 'sort']
+      const removeFields = ['select', 'sort', 'page', 'limit']
       removeFields.forEach((field) => delete reqQuery[field])
 
       if (req.query.date) {
@@ -71,13 +72,40 @@ export const getCashBooksHandler = asyncHandler(
       query = query.sort('-createdAt')
     }
 
+    // Pagination
+    const page = parseInt(req.query.page, 10) || 1
+    const limit = parseInt(req.query.limit, 10) || 5
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
+    const totalDocument = await CashBook.countDocuments()
+
+    query = query.skip(startIndex).limit(limit)
+
     const cashBooks = await query
 
     const totalCashBook = await getTotalCashBook()
 
+    // Pagination result
+    const pagination = {}
+    if (endIndex < totalDocument) {
+      // @ts-ignore
+      pagination.next = {
+        page: page + 1,
+        limit,
+      }
+    }
+    if (startIndex > 0) {
+      // @ts-ignore
+      pagination.prev = {
+        page: page - 1,
+        limit,
+      }
+    }
+
     return res.status(200).json({
       success: true,
       count: cashBooks.length,
+      pagination,
       totalCashBook,
       cashBooks,
     })
