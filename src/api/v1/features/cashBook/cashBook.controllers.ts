@@ -1,23 +1,16 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
-  CashBook,
   deleteCashBook,
   editCashBook,
-  getCashBooks,
+  getCashBookQueryResults,
   getSingleCashBookById,
-  getTotalCashBook,
   IBaseCashBook,
   ICashBook,
   ICashBookQuery,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import {
-  ErrorResponse,
-  getPaginationOptions,
-  getPaginationResult,
-  getQueryStr,
-} from '../../utils'
+import { ErrorResponse } from '../../utils'
 import { IOffering } from '../offering'
 
 export const getCashBooksHandler = asyncHandler(
@@ -26,69 +19,8 @@ export const getCashBooksHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    let query
-
-    if (req.query) {
-      const queryStr = getQueryStr(req.query)
-
-      if (req.query.date) {
-        req.query.date = new Date(req.query.date)
-      }
-
-      query = getCashBooks(JSON.parse(queryStr)).populate<{
-        offering: IOffering
-      }>({
-        path: 'account.offering',
-        model: 'Offering',
-        select: 'churchService',
-      })
-    } else {
-      query = getCashBooks().populate<{
-        offering: IOffering
-      }>({
-        path: 'account.offering',
-        model: 'Offering',
-        select: 'churchService',
-      })
-    }
-
-    // Selecting specific field(s)
-    if (req.query.select) {
-      const fields = req.query.select.split(',').join(' ')
-      query = query.select(fields)
-    }
-
-    // Sort by field(s)
-    if (req.query.sort) {
-      const sortedBy = req.query.sort.split(',').join(' ')
-      query = query.sort(sortedBy)
-    } else {
-      query = query.sort('-createdAt')
-    }
-
-    // Pagination
-    const paginationOptions = getPaginationOptions(
-      req.query.page,
-      req.query.limit
-    )
-
-    const { page, limit, startIndex, endIndex } = paginationOptions
-
-    query = query.skip(startIndex).limit(limit)
-
-    const cashBooks = await query
-
-    const totalCashBook = await getTotalCashBook()
-
-    const totalDocument = await CashBook.countDocuments()
-
-    const pagination = getPaginationResult(
-      page,
-      limit,
-      startIndex,
-      endIndex,
-      totalDocument
-    )
+    const { cashBooks, pagination, totalCashBook } =
+      await getCashBookQueryResults(req.query)
 
     return res.status(200).json({
       success: true,
