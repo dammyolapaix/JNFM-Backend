@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import {
   addCashBook,
-  CashBook,
   deleteCashBook,
   editCashBook,
   getCashBooks,
@@ -24,12 +23,18 @@ export const getCashBooksHandler = asyncHandler(
     let query
 
     if (req.query) {
+      const reqQuery = { ...req.query }
+
       let queryStr = JSON.stringify(req.query)
 
       queryStr = queryStr.replace(
         /\b(gt|gte|lt|lte|eq|in)\b/g,
         (match) => `$${match}`
       )
+
+      // Fields to exclude in the query
+      const removeFields = ['select']
+      removeFields.forEach((field) => delete reqQuery[field])
 
       if (req.query.date) {
         req.query.date = new Date(req.query.date)
@@ -50,6 +55,11 @@ export const getCashBooksHandler = asyncHandler(
         model: 'Offering',
         select: 'churchService',
       })
+    }
+
+    if (req.query.select) {
+      const fields = req.query.select.split(',').join(' ')
+      query = query.select(fields)
     }
 
     const cashBooks = await query
