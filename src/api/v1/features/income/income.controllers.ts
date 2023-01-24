@@ -5,19 +5,28 @@ import {
   editIncome,
   getIncomes,
   getSingleIncomeById,
+  getTotalIncome,
   IBaseIncome,
   IIncome,
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
+import { IOffering } from '../offering'
 
 export const getIncomesHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const incomes = await getIncomes()
+    const incomes = await getIncomes().populate<{ offering: IOffering }>({
+      path: 'source.offering',
+      model: 'Offering',
+      select: 'churchService',
+    })
+
+    const totalIncome = await getTotalIncome()
 
     return res.status(200).json({
       success: true,
       count: incomes.length,
+      totalIncome,
       incomes,
     })
   }
