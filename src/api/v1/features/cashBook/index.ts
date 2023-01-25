@@ -6,7 +6,11 @@
 import CashBook from './CashBook'
 
 //  Importing Interfaces
-import ICashBook, { IBaseCashBook } from './cashBook.interfaces'
+import ICashBook, {
+  IBaseCashBook,
+  ITotalCashBook,
+  ICashBookQuery,
+} from './cashBook.interfaces'
 
 // Importing Services
 import {
@@ -16,6 +20,7 @@ import {
   getCashBooks,
   getSingleCashBookById,
   getTotalCashBook,
+  getCashBookQueryResults,
 } from './cashBook.services'
 
 // Importing Controllers
@@ -40,7 +45,7 @@ import cashBookRoutes from './cashBook.routes'
 export { CashBook }
 
 //  Exporting Interfaces
-export { IBaseCashBook, ICashBook }
+export { IBaseCashBook, ICashBook, ITotalCashBook, ICashBookQuery }
 
 // Exporting Services
 export {
@@ -50,6 +55,7 @@ export {
   getCashBooks,
   getSingleCashBookById,
   getTotalCashBook,
+  getCashBookQueryResults,
 }
 
 // Exporting Controllers

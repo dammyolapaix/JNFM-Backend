@@ -26,3 +26,32 @@ export interface IBaseCashBook {
 export default interface ICashBook extends IBaseCashBook {
   _id: Types.ObjectId
 }
+
+interface IBalance {
+  _id: null
+  balance: number
+}
+interface ITotalIncome {
+  _id: null
+  totalIncome: number
+}
+interface ITotalExpenditure {
+  _id: null
+  totalExpenditure: number
+}
+
+export interface ITotalCashBook {
+  balance: IBalance[]
+  totalIncome: ITotalIncome[]
+  totalExpenditure: ITotalExpenditure[]
+}
+
+export interface ICashBookQuery {
+  date?: Date
+  amount?: number
+  debitCredit?: 'Credit' | 'Debit'
+  select?: string
+  sort?: string
+  page: string
+  limit: string
+}

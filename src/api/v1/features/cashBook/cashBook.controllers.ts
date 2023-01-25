@@ -3,29 +3,29 @@ import {
   addCashBook,
   deleteCashBook,
   editCashBook,
-  getCashBooks,
+  getCashBookQueryResults,
   getSingleCashBookById,
-  getTotalCashBook,
   IBaseCashBook,
   ICashBook,
+  ICashBookQuery,
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IOffering } from '../offering'
 
 export const getCashBooksHandler = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const cashBooks = await getCashBooks().populate<{ offering: IOffering }>({
-      path: 'account.offering',
-      model: 'Offering',
-      select: 'churchService',
-    })
-
-    const totalCashBook = await getTotalCashBook()
+  async (
+    req: Request<{}, {}, {}, ICashBookQuery>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { cashBooks, pagination, totalCashBook } =
+      await getCashBookQueryResults(req.query)
 
     return res.status(200).json({
       success: true,
       count: cashBooks.length,
+      pagination,
       totalCashBook,
       cashBooks,
     })
