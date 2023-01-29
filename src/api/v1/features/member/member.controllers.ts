@@ -14,6 +14,7 @@ import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
 import { IDepartment } from '../department'
 import { IWelfare } from '../welfare'
+import { ITithe } from '../tithe'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -72,7 +73,14 @@ export const getSingleMemberByIdHandler = asyncHandler(
       }>({
         path: 'welfares',
         model: 'Welfare',
-        select: 'amount date'
+        select: 'amount date',
+      })
+      .populate<{
+        welfare: ITithe[]
+      }>({
+        path: 'tithes',
+        model: 'Tithe',
+        select: 'amount date',
       })
 
     if (!member) {
