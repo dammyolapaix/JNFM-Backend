@@ -82,8 +82,7 @@ export const getCashBookQueryResults = async (
   cashBookQuery: ICashBookQuery
 ) => {
   let query
-
-  if (cashBookQuery) {
+  if (cashBookQuery && Object.keys(cashBookQuery).length > 0) {
     const queryStr = getQueryStr(cashBookQuery)
 
     if (cashBookQuery.date) {
@@ -122,10 +121,15 @@ export const getCashBookQueryResults = async (
   }
 
   // Pagination
-  const paginationOptions = getPaginationOptions(
-    cashBookQuery.page,
-    cashBookQuery.limit
-  )
+  let paginationOptions
+  if (cashBookQuery.page && cashBookQuery.limit) {
+    paginationOptions = getPaginationOptions(
+      cashBookQuery.page,
+      cashBookQuery.limit
+    )
+  } else {
+    paginationOptions = getPaginationOptions()
+  }
 
   const { page, limit, startIndex, endIndex } = paginationOptions
 
