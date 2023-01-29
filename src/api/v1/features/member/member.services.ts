@@ -86,7 +86,7 @@ export const getMemberQueryResults = async (memberQuery: IMemberQuery) => {
     const sortedBy = memberQuery.sort.split(',').join(' ')
     query = query.sort(sortedBy)
   } else {
-    query = query.sort('-fullName')
+    query = query.sort('fullName')
   }
 
   // Pagination
