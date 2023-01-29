@@ -13,6 +13,8 @@ import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
 import { IDepartment } from '../department'
+import { IWelfare } from '../welfare'
+import { ITithe } from '../tithe'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -48,12 +50,37 @@ export const getSingleMemberByIdHandler = asyncHandler(
       }>({
         path: 'attendances',
         model: 'Attendance',
+        select: 'churchService',
+        populate: {
+          path: 'churchService',
+          model: 'ChurchService',
+          select: 'date churchServiceType',
+          populate: {
+            path: 'churchServiceType',
+            model: 'ChurchServiceType',
+            select: 'name',
+          },
+        },
       })
       .populate<{
         departments: IDepartment[]
       }>({
         path: 'departments',
         model: 'Department',
+      })
+      .populate<{
+        welfare: IWelfare[]
+      }>({
+        path: 'welfares',
+        model: 'Welfare',
+        select: 'amount date',
+      })
+      .populate<{
+        welfare: ITithe[]
+      }>({
+        path: 'tithes',
+        model: 'Tithe',
+        select: 'amount date',
       })
 
     if (!member) {

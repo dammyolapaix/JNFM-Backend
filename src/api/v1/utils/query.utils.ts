@@ -4,7 +4,7 @@ const getQueryStr = (query: Object): string => {
   let queryStr = JSON.stringify(query)
 
   queryStr = queryStr.replace(
-    /\b(gt|gte|lt|lte|eq|in)\b/g,
+    /\b(gt|gte|lt|lte|eq|in|exists)\b/g,
     (match) => `$${match}`
   )
 
