@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { ITithe } from './index'
 
-const TITitheSchema = new Schema<ITithe>(
+const TitheSchema = new Schema<ITithe>(
   {
     date: {
       type: Date,
@@ -24,6 +24,6 @@ const TITitheSchema = new Schema<ITithe>(
   }
 )
 
-const TITithe = model<ITithe>('TITithe', TITitheSchema)
+const Tithe = model<ITithe>('Tithe', TitheSchema)
 
-export default TITithe
+export default Tithe
