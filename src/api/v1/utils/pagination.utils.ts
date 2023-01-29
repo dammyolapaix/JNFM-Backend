@@ -1,9 +1,16 @@
 export const getPaginationOptions = (
-  reqQuerypage: string,
-  reqQuerylimit: string
+  reqQuerypage?: string,
+  reqQuerylimit?: string
 ) => {
-  const page: number = parseInt(reqQuerypage, 10) || 1
-  const limit: number = parseInt(reqQuerylimit, 10) || 50
+  let page: number = 1
+  let limit: number = 50
+
+  if (reqQuerypage) {
+    page = parseInt(reqQuerypage, 10)
+  }
+  if (reqQuerylimit) {
+    limit = parseInt(reqQuerylimit, 10)
+  }
   const startIndex: number = (page - 1) * limit
   const endIndex: number = page * limit
 
