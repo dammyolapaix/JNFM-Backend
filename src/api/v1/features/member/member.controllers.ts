@@ -13,6 +13,7 @@ import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
 import { IDepartment } from '../department'
+import { IWelfare } from '../welfare'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -65,6 +66,13 @@ export const getSingleMemberByIdHandler = asyncHandler(
       }>({
         path: 'departments',
         model: 'Department',
+      })
+      .populate<{
+        welfare: IWelfare[]
+      }>({
+        path: 'welfares',
+        model: 'Welfare',
+        select: 'amount date'
       })
 
     if (!member) {
