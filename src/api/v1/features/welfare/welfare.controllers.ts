@@ -10,13 +10,15 @@ import {
   IReqWelfare,
 } from './index'
 import { asyncHandler } from '../../middlewares'
-import { ErrorResponse } from '../../utils'
+import { changeToLowerDenomination, ErrorResponse } from '../../utils'
 import { getSingleMemberById, IMember } from '../member'
+import { addIncome } from '../income'
+import { addCashBook } from '../cashBook'
 
 export const getWelfaresHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const welfares = await getWelfares().populate<{ member: IMember }>({
-      path: 'members',
+      path: 'member',
       select: 'fullName',
     })
 
@@ -63,7 +65,7 @@ export const addWelfareHandler = asyncHandler(
   ) => {
     const { member } = req.body
 
-    const welfare = await addWelfare(req.body)
+    req.body.amount = changeToLowerDenomination(req.body.amount)
 
     const getMember = await getSingleMemberById(member)
 
@@ -72,6 +74,23 @@ export const addWelfareHandler = asyncHandler(
         new ErrorResponse(`Member with the id of ${member} not found`, 404)
       )
     }
+
+    const welfare = await addWelfare(req.body)
+
+    const { _id, date, amount } = welfare
+
+    const income = {
+      date,
+      amount,
+      naration: `Welfare paid by ${getMember.fullName}`,
+      source: { welfare: _id },
+    }
+
+    await addIncome(income)
+
+    const { naration, source: account } = income
+
+    await addCashBook({ date, amount, naration, account, debitCredit: 'Debit' })
 
     return res.status(201).json({ success: true, welfare })
   }
