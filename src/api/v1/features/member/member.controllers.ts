@@ -48,6 +48,17 @@ export const getSingleMemberByIdHandler = asyncHandler(
       }>({
         path: 'attendances',
         model: 'Attendance',
+        select: 'churchService',
+        populate: {
+          path: 'churchService',
+          model: 'ChurchService',
+          select: 'date churchServiceType',
+          populate: {
+            path: 'churchServiceType',
+            model: 'ChurchServiceType',
+            select: 'name',
+          },
+        },
       })
       .populate<{
         departments: IDepartment[]
