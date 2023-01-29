@@ -4,7 +4,7 @@ import {
   deleteMember,
   editMember,
   getFullName,
-  getMembers,
+  getMemberQueryResults,
   getSingleMemberById,
   IBaseMember,
   IMember,
@@ -18,23 +18,14 @@ import { ITithe } from '../tithe'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const members = await getMembers()
-      .populate<{
-        attendances: IAttendance[]
-      }>({
-        path: 'attendances',
-        model: 'Attendance',
-      })
-      .populate<{
-        departments: IDepartment[]
-      }>({
-        path: 'departments',
-        model: 'Department',
-      })
+    const { members, pagination } = await getMemberQueryResults(req.query)
 
-    return res
-      .status(200)
-      .json({ success: true, count: members.length, members })
+    return res.status(200).json({
+      success: true,
+      count: members.length,
+      pagination,
+      members,
+    })
   }
 )
 

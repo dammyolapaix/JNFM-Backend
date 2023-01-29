@@ -21,3 +21,11 @@ export interface IBaseMember {
 export default interface IMember extends IBaseMember {
   _id: Types.ObjectId
 }
+
+export interface IMemberQuery {
+  fullName?: string
+  select?: string
+  sort?: string
+  page?: string
+  limit?: string
+}
