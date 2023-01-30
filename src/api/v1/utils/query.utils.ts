@@ -1,10 +1,9 @@
 const getQueryStr = (query: Object): string => {
   const reqQuery = { ...query }
-
   let queryStr = JSON.stringify(query)
 
   queryStr = queryStr.replace(
-    /\b(gt|gte|lt|lte|eq|in|exists)\b/g,
+    /\b(gt|gte|lt|lte|eq|in|exists|ne)\b/g,
     (match) => `$${match}`
   )
 
