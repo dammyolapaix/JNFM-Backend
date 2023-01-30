@@ -45,8 +45,19 @@ export const getMemberQueryResults = async (memberQuery: IMemberQuery) => {
     }
 
     const queryStr = getQueryStr(memberQuery)
+    const queryStrJSON = JSON.parse(queryStr)
 
-    query = getMembers(JSON.parse(queryStr))
+    if (
+      // @ts-ignore
+      queryStrJSON.dateOfBirth &&
+      // @ts-ignore
+      queryStrJSON.dateOfBirth['$ne'] === 'null'
+    ) {
+      // @ts-ignore
+      queryStrJSON.dateOfBirth['$ne'] = null
+    }
+
+    query = getMembers(queryStrJSON)
       .populate<{
         attendances: IAttendance[]
       }>({
@@ -86,7 +97,7 @@ export const getMemberQueryResults = async (memberQuery: IMemberQuery) => {
     const sortedBy = memberQuery.sort.split(',').join(' ')
     query = query.sort(sortedBy)
   } else {
-    query = query.sort('-fullName')
+    query = query.sort('fullName')
   }
 
   // Pagination
