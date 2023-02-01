@@ -7,6 +7,11 @@ const ChurchServiceSchema = new Schema<IChurchService>(
       type: Date,
       required: [true, 'The date of the church service is required'],
     },
+    churchServiceType: {
+      type: Schema.Types.ObjectId,
+      ref: 'ChurchServiceType',
+      required: [true, 'The church service type is required'],
+    },
     startsAt: {
       type: Date,
     },
@@ -23,6 +28,18 @@ const ChurchServiceSchema = new Schema<IChurchService>(
 
 ChurchServiceSchema.virtual('attendances', {
   ref: 'Attendance',
+  localField: '_id',
+  foreignField: 'churchService',
+})
+
+ChurchServiceSchema.virtual('offerings', {
+  ref: 'Offering',
+  localField: '_id',
+  foreignField: 'churchService',
+})
+
+ChurchServiceSchema.virtual('expenditures', {
+  ref: 'Expenditure',
   localField: '_id',
   foreignField: 'churchService',
 })

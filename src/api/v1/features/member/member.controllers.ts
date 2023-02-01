@@ -4,7 +4,7 @@ import {
   deleteMember,
   editMember,
   getFullName,
-  getMembers,
+  getMemberQueryResults,
   getSingleMemberById,
   IBaseMember,
   IMember,
@@ -12,19 +12,20 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IAttendance } from '../attendance'
+import { IDepartment } from '../department'
+import { IWelfare } from '../welfare'
+import { ITithe } from '../tithe'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const members = await getMembers().populate<{
-      attendances: IAttendance[]
-    }>({
-      path: 'attendances',
-      model: 'Attendance',
-    })
+    const { members, pagination } = await getMemberQueryResults(req.query)
 
-    return res
-      .status(200)
-      .json({ success: true, count: members.length, members })
+    return res.status(200).json({
+      success: true,
+      count: members.length,
+      pagination,
+      members,
+    })
   }
 )
 
@@ -35,6 +36,43 @@ export const getSingleMemberByIdHandler = asyncHandler(
     next: NextFunction
   ) => {
     const member = await getSingleMemberById(req.params.id)
+      .populate<{
+        attendances: IAttendance[]
+      }>({
+        path: 'attendances',
+        model: 'Attendance',
+        select: 'churchService',
+        populate: {
+          path: 'churchService',
+          model: 'ChurchService',
+          select: 'date churchServiceType',
+          populate: {
+            path: 'churchServiceType',
+            model: 'ChurchServiceType',
+            select: 'name',
+          },
+        },
+      })
+      .populate<{
+        departments: IDepartment[]
+      }>({
+        path: 'departments',
+        model: 'Department',
+      })
+      .populate<{
+        welfare: IWelfare[]
+      }>({
+        path: 'welfares',
+        model: 'Welfare',
+        select: 'amount date',
+      })
+      .populate<{
+        welfare: ITithe[]
+      }>({
+        path: 'tithes',
+        model: 'Tithe',
+        select: 'amount date',
+      })
 
     if (!member) {
       return next(

@@ -69,6 +69,23 @@ const MemberSchema = new Schema<IMember>(
         number: Number,
       },
     ],
+    nearestRelative: {
+      name: {
+        type: String,
+        trim: true,
+      },
+      relationship: {
+        type: String,
+        trim: true,
+      },
+      phoneNumber: {
+        countryCode: Number,
+        number: Number,
+      },
+    },
+    dateJoined: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -79,6 +96,24 @@ const MemberSchema = new Schema<IMember>(
 
 MemberSchema.virtual('attendances', {
   ref: 'Attendance',
+  localField: '_id',
+  foreignField: 'member',
+})
+
+MemberSchema.virtual('departments', {
+  ref: 'Department',
+  localField: '_id',
+  foreignField: 'members.member',
+})
+
+MemberSchema.virtual('welfares', {
+  ref: 'Welfare',
+  localField: '_id',
+  foreignField: 'member',
+})
+
+MemberSchema.virtual('tithes', {
+  ref: 'Tithe',
   localField: '_id',
   foreignField: 'member',
 })

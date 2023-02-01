@@ -6,7 +6,7 @@
 import Member from './Member'
 
 //  Importing Interfaces
-import IMember, { IBaseMember } from './member.interfaces'
+import IMember, { IBaseMember, IMemberQuery } from './member.interfaces'
 
 // Importing Services
 import {
@@ -15,6 +15,7 @@ import {
   editMember,
   getMembers,
   getSingleMemberById,
+  getMemberQueryResults,
 } from './member.services'
 
 // Importing Controllers
@@ -40,10 +41,17 @@ import { getFullName } from './member.utils'
 export { Member }
 
 //  Exporting Interfaces
-export { IBaseMember, IMember }
+export { IBaseMember, IMember, IMemberQuery }
 
 // Exporting Services
-export { addMember, deleteMember, editMember, getMembers, getSingleMemberById }
+export {
+  addMember,
+  deleteMember,
+  editMember,
+  getMembers,
+  getSingleMemberById,
+  getMemberQueryResults,
+}
 
 // Exporting Controllers
 export {

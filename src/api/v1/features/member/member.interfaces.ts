@@ -16,8 +16,28 @@ export interface IBaseMember {
     countryCode: number
     number: number
   }[]
+  nearestRelative?: {
+    name?: string
+    relationship?: string
+    phoneNumber?: {
+      countryCode: number
+      number: number
+    }
+  }
+  dateJoined?: Date
 }
 
 export default interface IMember extends IBaseMember {
   _id: Types.ObjectId
+}
+
+export interface IMemberQuery {
+  fullName?: string
+  gender?: 'Male' | 'Female'
+  maritalStatus?: 'Single' | 'Married' | 'Divorced' | 'Widowed'
+  dateOfBirth?: Date
+  select?: string
+  sort?: string
+  page?: string
+  limit?: string
 }
