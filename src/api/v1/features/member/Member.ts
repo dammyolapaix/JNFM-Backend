@@ -69,6 +69,23 @@ const MemberSchema = new Schema<IMember>(
         number: Number,
       },
     ],
+    nearestRelative: {
+      name: {
+        type: String,
+        trim: true,
+      },
+      relationship: {
+        type: String,
+        trim: true,
+      },
+      phoneNumber: {
+        countryCode: Number,
+        number: Number,
+      },
+    },
+    dateJoined: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
