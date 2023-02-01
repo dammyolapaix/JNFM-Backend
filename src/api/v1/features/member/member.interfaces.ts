@@ -16,6 +16,15 @@ export interface IBaseMember {
     countryCode: number
     number: number
   }[]
+  nearestRelative?: {
+    name?: string
+    relationship?: string
+    phoneNumber?: {
+      countryCode: number
+      number: number
+    }
+  }
+  dateJoined?: Date
 }
 
 export default interface IMember extends IBaseMember {
