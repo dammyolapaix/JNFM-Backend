@@ -1,4 +1,5 @@
 import { Types } from 'mongoose'
+import { ICell } from '../cell'
 
 export interface IBaseMember {
   firstName: string
@@ -25,6 +26,10 @@ export interface IBaseMember {
     }
   }
   dateJoined?: Date
+  cell: {
+    cell: ICell
+    dateJoined?: Date
+  }
 }
 
 export default interface IMember extends IBaseMember {
