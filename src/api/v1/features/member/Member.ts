@@ -86,6 +86,15 @@ const MemberSchema = new Schema<IMember>(
     dateJoined: {
       type: Date,
     },
+    cell: {
+      cell: {
+        type: Schema.Types.ObjectId,
+        ref: 'Cell',
+      },
+      dateJoined: {
+        type: Date,
+      },
+    },
   },
   {
     timestamps: true,
