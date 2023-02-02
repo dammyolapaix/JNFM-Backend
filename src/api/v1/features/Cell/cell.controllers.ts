@@ -4,20 +4,18 @@ import {
   deleteCell,
   editCell,
   getCells,
-  getSingleCell,
   getSingleCellById,
   IBaseCell,
   ICell,
-  IReqCell,
 } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
-import { getSingleMemberById, IMember } from '../member'
+import { IMember } from '../member'
 
 export const getCellsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const cells = await getCells().populate<{ members: IMember[] }>({
-      path: 'members.member',
+      path: 'members',
       select: 'fullName',
     })
 
@@ -34,7 +32,7 @@ export const getSingleCellByIdHandler = asyncHandler(
     const cell = await getSingleCellById(req.params.id).populate<{
       members: IMember[]
     }>({
-      path: 'members.member',
+      path: 'members',
       select: 'fullName',
     })
 
@@ -95,93 +93,6 @@ export const deleteCellHandler = asyncHandler(
         new ErrorResponse(`Cell with the id of ${req.params.id} not found`, 404)
       )
     }
-
-    res.status(200).json({ success: true, cell })
-  }
-)
-
-export const addMemberToCellHandler = asyncHandler(
-  async (
-    req: Request<{ id: ICell['_id'] }, {}, IReqCell, {}>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const { member } = req.body
-
-    const cell = await getSingleCellById(req.params.id)
-
-    const getMember = await getSingleMemberById(member)
-
-    if (!cell) {
-      return next(
-        new ErrorResponse(`Cell with the id of ${req.params.id} not found`, 404)
-      )
-    }
-
-    if (!getMember) {
-      return next(
-        new ErrorResponse(`Member with the id of ${member} not found`, 404)
-      )
-    }
-
-    const existingMember = await getSingleCell({ 'members.member': member })
-
-    if (existingMember) {
-      return next(
-        new ErrorResponse(`This member has already being added to a cell`, 400)
-      )
-    }
-
-    cell.members?.unshift({ member })
-
-    await cell.save()
-
-    res.status(200).json({ success: true, cell })
-  }
-)
-
-export const removeMemberFromCellHandler = asyncHandler(
-  async (
-    req: Request<{ id: ICell['_id'] }, {}, IReqCell, {}>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const { member } = req.body
-
-    const cell = await getSingleCellById(req.params.id)
-
-    const getMember = await getSingleMemberById(member)
-
-    if (!cell) {
-      return next(
-        new ErrorResponse(`Cell with the id of ${req.params.id} not found`, 404)
-      )
-    }
-
-    if (!getMember) {
-      return next(
-        new ErrorResponse(`Member with the id of ${member} not found`, 404)
-      )
-    }
-
-    const isNotAMember =
-      typeof cell.members !== 'undefined' &&
-      cell.members.filter((member) => member.member == req.body.member)
-        .length === 0
-
-    if (isNotAMember) {
-      return next(new ErrorResponse(`This member is not in this cell`, 400))
-    }
-
-    const memberIndex = cell.members
-      ?.map((member) => member.member && member.member.toString())
-      .indexOf(req.body.member.toString())
-
-    typeof memberIndex !== 'undefined' &&
-      typeof cell.members !== 'undefined' &&
-      cell.members.splice(memberIndex, 1)
-
-    await cell.save()
 
     res.status(200).json({ success: true, cell })
   }
