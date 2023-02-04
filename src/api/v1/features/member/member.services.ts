@@ -4,6 +4,7 @@ import {
   getQueryStr,
 } from '../../utils'
 import { IAttendance } from '../attendance'
+import { ICell } from '../cell'
 import { IDepartment } from '../department'
 import { IBaseMember, IMember, IMemberQuery, Member } from './index'
 
@@ -59,6 +60,12 @@ export const getMemberQueryResults = async (memberQuery: IMemberQuery) => {
 
     query = getMembers(queryStrJSON)
       .populate<{
+        cell: ICell
+      }>({
+        path: 'cell.cell',
+        model: 'Cell',
+      })
+      .populate<{
         attendances: IAttendance[]
       }>({
         path: 'attendances',
@@ -72,6 +79,12 @@ export const getMemberQueryResults = async (memberQuery: IMemberQuery) => {
       })
   } else {
     query = getMembers()
+      .populate<{
+        cell: ICell
+      }>({
+        path: 'cell.cell',
+        model: 'Cell',
+      })
       .populate<{
         attendances: IAttendance[]
       }>({
