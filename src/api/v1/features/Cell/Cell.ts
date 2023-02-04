@@ -9,16 +9,6 @@ const CellSchema = new Schema<ICell>(
       unique: true,
       trim: true,
     },
-    members: [
-      {
-        member: {
-          type: Schema.Types.ObjectId,
-          ref: 'Member',
-          unique: true,
-          sparse: true,
-        },
-      },
-    ],
   },
   {
     timestamps: true,
@@ -26,6 +16,12 @@ const CellSchema = new Schema<ICell>(
     toObject: { virtuals: true },
   }
 )
+
+CellSchema.virtual('members', {
+  ref: 'Member',
+  localField: '_id',
+  foreignField: 'cell.cell',
+})
 
 const Cell = model<ICell>('Cell', CellSchema)
 
