@@ -16,7 +16,7 @@ export const getCellsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const cells = await getCells().populate<{ members: IMember[] }>({
       path: 'members',
-      select: 'fullName',
+      select: 'fullName gender dateOfBirth',
     })
 
     return res.status(200).json({ success: true, count: cells.length, cells })
@@ -33,7 +33,7 @@ export const getSingleCellByIdHandler = asyncHandler(
       members: IMember[]
     }>({
       path: 'members',
-      select: 'fullName',
+      select: 'fullName gender dateOfBirth',
     })
 
     if (!cell) {
