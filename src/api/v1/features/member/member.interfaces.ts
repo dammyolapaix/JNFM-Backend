@@ -13,19 +13,12 @@ export interface IBaseMember {
   postalAddress?: string | undefined
   homeAddress?: string | undefined
   email?: string | undefined
-  phoneNumbers?: {
-    countryCode: number
-    number: number
-  }[]
+  phoneNumber?: string
   nearestRelative?: {
     name?: string
     relationship?: string
-    phoneNumber?: {
-      countryCode: number
-      number: number
-    }
+    phoneNumber?: string
   }
-  dateJoined?: Date
   cell: {
     cell: ICell
     dateJoined?: Date

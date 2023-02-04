@@ -63,12 +63,10 @@ const MemberSchema = new Schema<IMember>(
       ],
       lowercase: true,
     },
-    phoneNumbers: [
-      {
-        countryCode: Number,
-        number: Number,
-      },
-    ],
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
     nearestRelative: {
       name: {
         type: String,
@@ -79,12 +77,9 @@ const MemberSchema = new Schema<IMember>(
         trim: true,
       },
       phoneNumber: {
-        countryCode: Number,
-        number: Number,
+        type: String,
+        trim: true,
       },
-    },
-    dateJoined: {
-      type: Date,
     },
     cell: {
       cell: {
