@@ -30,7 +30,7 @@ export const getChurchServicesHandler = asyncHandler(
         populate: {
           path: 'member',
           model: 'Member',
-          select: 'fullName',
+          select: 'fullName gender cell',
         },
       })
       .populate<{ offerings: IOffering[] }>({
