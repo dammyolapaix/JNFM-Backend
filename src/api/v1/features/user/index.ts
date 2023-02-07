@@ -10,6 +10,7 @@ import {
 } from './user.services'
 import { registerUserHandler } from './user.controllers'
 import userRoutes from './user.routes'
+import { getHashedPassword } from './user.utils'
 
 export { User }
 
@@ -26,3 +27,5 @@ export {
 
 export { registerUserHandler }
 export { userRoutes }
+
+export { getHashedPassword }
