@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { asyncHandler } from '../../middlewares'
 import { IBaseUser } from './user.interfaces'
-import { addUser } from './user.services'
-import { getHashedPassword } from './user.utils'
+import { registerUser } from './user.services'
 
 export const registerUserHandler = asyncHandler(
   async (
@@ -10,9 +9,7 @@ export const registerUserHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    req.body.password = await getHashedPassword(req.body.password)
-
-    const user = await addUser(req.body)
+    const user = await registerUser(req.body)
 
     return res.status(201).json({ success: true, user })
   }

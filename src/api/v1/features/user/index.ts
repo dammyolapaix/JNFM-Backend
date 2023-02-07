@@ -7,6 +7,7 @@ import {
   getSingleUserByEmail,
   getSingleUserById,
   getUsers,
+  registerUser,
 } from './user.services'
 import { registerUserHandler } from './user.controllers'
 import userRoutes from './user.routes'
@@ -23,6 +24,7 @@ export {
   getSingleUserByEmail,
   getSingleUserById,
   getUsers,
+  registerUser,
 }
 
 export { registerUserHandler }
