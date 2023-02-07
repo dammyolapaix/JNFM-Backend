@@ -22,3 +22,8 @@ export const getSignedJwtToken = async (userId: IUser['_id']) => {
     return error
   }
 }
+
+export const getComparedPassword = async (
+  enteredPassword: IUser['password'],
+  userPassword: IUser['password']
+): Promise<boolean> => await bcrypt.compare(enteredPassword, userPassword)

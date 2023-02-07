@@ -9,9 +9,13 @@ import {
   getUsers,
   registerUser,
 } from './user.services'
-import { registerUserHandler } from './user.controllers'
+import { registerUserHandler, loginUserHandler } from './user.controllers'
 import userRoutes from './user.routes'
-import { getHashedPassword, getSignedJwtToken } from './user.utils'
+import {
+  getHashedPassword,
+  getSignedJwtToken,
+  getComparedPassword,
+} from './user.utils'
 
 export { User }
 
@@ -27,7 +31,7 @@ export {
   registerUser,
 }
 
-export { registerUserHandler, getSignedJwtToken }
+export { registerUserHandler, loginUserHandler }
 export { userRoutes }
 
-export { getHashedPassword }
+export { getHashedPassword, getSignedJwtToken, getComparedPassword }
