@@ -1,4 +1,10 @@
-import { getHashedPassword, IBaseUser, IUser, User } from './index'
+import {
+  getHashedPassword,
+  getSignedJwtToken,
+  IBaseUser,
+  IUser,
+  User,
+} from './index'
 
 export const getUsers = () => User.find()
 
@@ -12,7 +18,10 @@ export const addUser = (user: IBaseUser) => User.create(user)
 export const registerUser = async (user: IBaseUser) => {
   user.password = await getHashedPassword(user.password)
   const newUser = await addUser(user)
-  return newUser
+
+  const token = await getSignedJwtToken(newUser._id)
+
+  return token
 }
 
 export const editUser = (userId: IUser['_id'], user: IBaseUser) =>

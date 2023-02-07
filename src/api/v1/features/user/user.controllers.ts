@@ -9,8 +9,8 @@ export const registerUserHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const user = await registerUser(req.body)
+    const token = await registerUser(req.body)
 
-    return res.status(201).json({ success: true, user })
+    return res.status(201).json({ success: true, token })
   }
 )

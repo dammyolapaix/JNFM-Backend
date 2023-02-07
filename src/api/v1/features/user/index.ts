@@ -11,7 +11,7 @@ import {
 } from './user.services'
 import { registerUserHandler } from './user.controllers'
 import userRoutes from './user.routes'
-import { getHashedPassword } from './user.utils'
+import { getHashedPassword, getSignedJwtToken } from './user.utils'
 
 export { User }
 
@@ -27,7 +27,7 @@ export {
   registerUser,
 }
 
-export { registerUserHandler }
+export { registerUserHandler, getSignedJwtToken }
 export { userRoutes }
 
 export { getHashedPassword }
