@@ -13,7 +13,17 @@ export const registerUserHandler = asyncHandler(
   ) => {
     const token = await registerUser(req.body)
 
-    return res.status(201).json({ success: true, token })
+    return res
+      .status(201)
+      .cookie('token', token, {
+        expires: new Date(
+          Date.now() + Number(process.env.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+      })
+      .json({ success: true, token })
   }
 )
 
@@ -55,6 +65,16 @@ export const loginUserHandler = asyncHandler(
 
     const token = await getSignedJwtToken(user._id)
 
-    return res.status(200).json({ success: true, token })
+    return res
+      .status(200)
+      .cookie('token', token, {
+        expires: new Date(
+          Date.now() + Number(process.env.COOKIE_EXPIRES) * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : undefined,
+      })
+      .json({ success: true, token })
   }
 )
