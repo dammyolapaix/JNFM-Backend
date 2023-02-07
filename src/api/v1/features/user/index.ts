@@ -15,7 +15,10 @@ import {
   getHashedPassword,
   getSignedJwtToken,
   getComparedPassword,
+  getVerifiedJwtToken,
 } from './user.utils'
+
+import { protectRoute } from './user.middlewares'
 
 export { User }
 
@@ -34,4 +37,11 @@ export {
 export { registerUserHandler, loginUserHandler }
 export { userRoutes }
 
-export { getHashedPassword, getSignedJwtToken, getComparedPassword }
+export {
+  getHashedPassword,
+  getSignedJwtToken,
+  getComparedPassword,
+  getVerifiedJwtToken,
+}
+
+export { protectRoute }

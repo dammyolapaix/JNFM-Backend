@@ -27,3 +27,8 @@ export const getComparedPassword = async (
   enteredPassword: IUser['password'],
   userPassword: IUser['password']
 ): Promise<boolean> => await bcrypt.compare(enteredPassword, userPassword)
+
+export const getVerifiedJwtToken = (token: string, secret: string) => {
+  const decoded = jwt.verify(token, secret)
+  return { payload: decoded, expired: false }
+}
