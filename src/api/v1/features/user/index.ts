@@ -8,6 +8,8 @@ import {
   getSingleUserById,
   getUsers,
 } from './user.services'
+import { registerUserHandler } from './user.controllers'
+import userRoutes from './user.routes'
 
 export { User }
 
@@ -21,3 +23,6 @@ export {
   getSingleUserById,
   getUsers,
 }
+
+export { registerUserHandler }
+export { userRoutes }

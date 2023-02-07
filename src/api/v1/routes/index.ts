@@ -14,10 +14,12 @@ import { expenditureRoutes } from '../features/expenditure'
 import { expenditureCategoryRoutes } from '../features/expenditure/expenditureCategory'
 import { incomeRoutes } from '../features/income'
 import { cashBookRoutes } from '../features/cashBook'
+import { userRoutes } from '../features/user'
 
 const router = express.Router()
 
 router.use('/api/v1/attendances', attendanceRoutes)
+router.use('/api/v1/auth', userRoutes)
 router.use('/api/v1/cells', cellRoutes)
 router.use('/api/v1/cashBooks', cashBookRoutes)
 router.use('/api/v1/churchServices', churchServiceRoutes)
