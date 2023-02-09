@@ -20,7 +20,10 @@ export const protectRoute = asyncHandler(
     try {
       // Verify token
       if (process.env.JWT_SECRET) {
-        const { payload } = getVerifiedJwtToken(token, process.env.JWT_SECRET)
+        const { payload } = await getVerifiedJwtToken(
+          token,
+          process.env.JWT_SECRET
+        )
 
         // @ts-ignore
         req.user = await getSingleUserById(payload.id)
