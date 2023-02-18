@@ -15,6 +15,7 @@ import { IAttendance } from '../attendance'
 import { IDepartment } from '../department'
 import { IWelfare } from '../welfare'
 import { ITithe } from '../tithe'
+import { ICell } from '../cell'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -60,18 +61,25 @@ export const getSingleMemberByIdHandler = asyncHandler(
         model: 'Department',
       })
       .populate<{
-        welfare: IWelfare[]
+        welfares: IWelfare[]
       }>({
         path: 'welfares',
         model: 'Welfare',
         select: 'amount date',
       })
       .populate<{
-        welfare: ITithe[]
+        tithes: ITithe[]
       }>({
         path: 'tithes',
         model: 'Tithe',
         select: 'amount date',
+      })
+      .populate<{
+        cell: ICell
+      }>({
+        path: 'cell.cell',
+        model: 'Cell',
+        select: 'name',
       })
 
     if (!member) {
