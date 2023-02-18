@@ -4,6 +4,7 @@
 import * as dotenv from 'dotenv'
 import express, { Express } from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import routes from './api/v1/routes'
 import { connectDB } from './api/v1/config'
@@ -33,6 +34,7 @@ app.use(
   })
 )
 app.use(express.json())
+app.use(cookieParser())
 app.use(routes)
 app.use(errorHandler)
 
