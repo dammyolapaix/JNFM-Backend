@@ -26,7 +26,11 @@ export const protectRoute = asyncHandler(
         )
 
         // @ts-ignore
-        req.user = await getSingleUserById(payload.id)
+        req.user = await getSingleUserById(payload.id).populate(
+          'role',
+          'name',
+          'Role'
+        ) // populating the user's role for checking the role of a user (authorization)
         next()
       }
     } catch (error) {
