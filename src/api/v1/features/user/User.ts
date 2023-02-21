@@ -37,6 +37,10 @@ const UserSchema = new Schema<IUser>(
       trim: true,
       required: [true, 'The password is required'],
     },
+    role: {
+      type: Schema.Types.ObjectId,
+      ref: 'Role',
+    },
   },
   {
     timestamps: true,
