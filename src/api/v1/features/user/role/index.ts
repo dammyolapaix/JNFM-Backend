@@ -14,6 +14,7 @@ import {
   getRolesHandler,
   getSingleRoleByIdHandler,
 } from './role.controllers'
+import { authorizedRoles } from './role.middlewares'
 
 export { Role }
 
@@ -28,3 +29,5 @@ export {
   getRolesHandler,
   getSingleRoleByIdHandler,
 }
+
+export { authorizedRoles }
