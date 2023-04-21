@@ -18,7 +18,7 @@ import {
   getVerifiedJwtToken,
 } from './user.utils'
 
-import { protectRoute } from './user.middlewares'
+import { authorizedRoles, protectRoute } from './user.middlewares'
 
 export { User }
 
@@ -44,4 +44,4 @@ export {
   getVerifiedJwtToken,
 }
 
-export { protectRoute }
+export { authorizedRoles, protectRoute }
