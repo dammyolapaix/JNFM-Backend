@@ -7,6 +7,7 @@ export interface IBaseUser {
   fullName: string
   email: string
   password: string
+  role: 'Admin' | 'User'
 }
 
 export default interface IMember extends IBaseUser {
