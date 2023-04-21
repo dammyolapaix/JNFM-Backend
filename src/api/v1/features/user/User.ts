@@ -36,10 +36,16 @@ const UserSchema = new Schema<IUser>(
       type: String,
       trim: true,
       required: [true, 'The password is required'],
+      minlength: 6,
+      select: false,
     },
     role: {
-      type: Schema.Types.ObjectId,
-      ref: 'Role',
+      type: String,
+      enum: {
+        values: ['Admin', 'User'],
+        message: '{VALUE} is not supported',
+      },
+      required: [true, 'The role of the user is required'],
     },
   },
   {

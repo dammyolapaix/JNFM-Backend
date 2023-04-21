@@ -1,5 +1,4 @@
 import { Types } from 'mongoose'
-import { IRole } from './role'
 
 export interface IBaseUser {
   firstName?: string
@@ -8,7 +7,7 @@ export interface IBaseUser {
   fullName: string
   email: string
   password: string
-  role?: IRole
+  role: 'Admin' | 'User'
 }
 
 export default interface IMember extends IBaseUser {
