@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { IUser, getSingleUserById } from './index'
+import { IRequestWithUer, IUser, getSingleUserById } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { getVerifiedJwtToken } from './user.utils'
@@ -37,18 +37,13 @@ export const protectRoute = asyncHandler(
   }
 )
 
-export const authorizedRoles = (...roles: IUser['role'][]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    // @ts-ignore
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorResponse(
-          // @ts-ignore
-          `User role "${req.user.role}" is not authorized to perform this action`,
-          403
-        )
-      )
+export const authorizedRoles = (allowedRoles: IUser['roles']) => {
+  return (req: IRequestWithUer, res: Response, next: NextFunction) => {
+    const user = req.user
+    if (user && allowedRoles.some((role) => user.roles.includes(role))) {
+      next() // User has one of the allowed roles, allow access to route
+    } else {
+      res.status(403).json({ message: 'Access denied' })
     }
-    next()
   }
 }

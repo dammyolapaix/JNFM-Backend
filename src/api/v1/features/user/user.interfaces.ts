@@ -1,4 +1,10 @@
+import { Request } from 'express'
 import { Types } from 'mongoose'
+
+export enum UserRole {
+  Admin = 'Admin',
+  Leader = 'Leader',
+}
 
 export interface IBaseUser {
   firstName?: string
@@ -7,9 +13,13 @@ export interface IBaseUser {
   fullName: string
   email: string
   password: string
-  role: 'Admin' | 'User'
+  roles: Array<UserRole>
 }
 
-export default interface IMember extends IBaseUser {
+export default interface IUser extends IBaseUser {
   _id: Types.ObjectId
+}
+
+export interface IRequestWithUer extends Request {
+  user?: IUser
 }
