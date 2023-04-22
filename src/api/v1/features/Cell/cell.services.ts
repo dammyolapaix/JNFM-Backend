@@ -1,3 +1,4 @@
+import { IUser } from '../user'
 import { IBaseCell, ICell, Cell, IQueryCell } from './index'
 
 export const getCells = () => {
@@ -25,4 +26,18 @@ export const editCell = (cellId: ICell['_id'], cell: IBaseCell) => {
 
 export const deleteCell = (cellId: ICell['_id']) => {
   return Cell.findByIdAndDelete(cellId)
+}
+
+export const addLeaderToCell = async (cellId: ICell['_id'], leader: IUser) => {
+  const cell = await getSingleCellById(cellId)
+
+  if (cell !== null) {
+    if (!cell.leaders) {
+      cell.leaders = [leader]
+    } else {
+      cell.leaders.push(leader)
+    }
+    await cell.save()
+  }
+  return cell
 }

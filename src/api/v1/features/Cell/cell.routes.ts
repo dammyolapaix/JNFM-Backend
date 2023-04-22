@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   addCellHandler,
+  addLeaderToCellHandler,
   deleteCellHandler,
   editCellHandler,
   getCellsHandler,
@@ -23,5 +24,9 @@ router
   )
   .patch(authorizedRoles([UserRole.Admin]), editCellHandler)
   .delete(authorizedRoles([UserRole.Admin]), deleteCellHandler)
+
+router
+  .route('/:id/add-leader')
+  .post(authorizedRoles([UserRole.Admin]), addLeaderToCellHandler)
 
 export default router
