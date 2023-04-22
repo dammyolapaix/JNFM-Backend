@@ -1,5 +1,5 @@
 import User from './User'
-import IUser, { IBaseUser } from './user.interfaces'
+import IUser, { IBaseUser, UserRole, IRequestWithUer } from './user.interfaces'
 import {
   addUser,
   deleteUser,
@@ -22,7 +22,7 @@ import { authorizedRoles, protectRoute } from './user.middlewares'
 
 export { User }
 
-export { IUser, IBaseUser }
+export { IUser, IBaseUser, UserRole, IRequestWithUer }
 
 export {
   addUser,

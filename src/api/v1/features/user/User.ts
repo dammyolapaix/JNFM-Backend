@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IUser } from './index'
+import { IUser, UserRole } from './index'
 
 const UserSchema = new Schema<IUser>(
   {
@@ -39,14 +39,16 @@ const UserSchema = new Schema<IUser>(
       minlength: 6,
       select: false,
     },
-    role: {
-      type: String,
-      enum: {
-        values: ['Admin', 'User'],
-        message: '{VALUE} is not supported',
+    roles: [
+      {
+        type: String,
+        enum: {
+          values: ['Admin', 'Leader'],
+          message: '{VALUE} is not supported',
+        },
+        required: [true, 'The role of the user is required'],
       },
-      required: [true, 'The role of the user is required'],
-    },
+    ],
   },
   {
     timestamps: true,
