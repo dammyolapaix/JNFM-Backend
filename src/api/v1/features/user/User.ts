@@ -43,7 +43,7 @@ const UserSchema = new Schema<IUser>(
       {
         type: String,
         enum: {
-          values: Object.values(UserRole),
+          values: ['Admin', 'Leader'],
           message: '{VALUE} is not supported',
         },
         required: [true, 'The role of the user is required'],
