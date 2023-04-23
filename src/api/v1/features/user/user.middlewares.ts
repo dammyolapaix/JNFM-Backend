@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { IRequestWithUer, IUser, UserRole, getSingleUserById } from './index'
+import { IUser, UserRole, getSingleUserById } from './index'
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { getVerifiedJwtToken } from './user.utils'
@@ -29,7 +29,7 @@ export const protectRoute = asyncHandler(
         req.user = await getSingleUserById(payload.id)
         next()
       } catch (error) {
-        next(new ErrorResponse('Access Denied', 401))
+        return next(new ErrorResponse('Access Denied', 401))
       }
     } else {
       return next(new ErrorResponse('Access Denied', 401))
@@ -38,7 +38,7 @@ export const protectRoute = asyncHandler(
 )
 
 export const authorizedRoles = (...roles: IUser['roles']) => {
-  return (req: IRequestWithUer, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const userRoles = req.user?.roles || []
 
     if (userRoles.includes(UserRole.Admin) && roles.length === 0) {
