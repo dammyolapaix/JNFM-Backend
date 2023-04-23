@@ -13,20 +13,15 @@ const router = express.Router()
 
 router
   .route('/')
-  .get(authorizedRoles([UserRole.Admin, UserRole.Leader]), getCellsHandler)
-  .post(authorizedRoles([UserRole.Admin]), addCellHandler)
+  .get(authorizedRoles(UserRole.Leader), getCellsHandler)
+  .post(authorizedRoles(), addCellHandler)
 
 router
   .route('/:id')
-  .get(
-    authorizedRoles([UserRole.Admin, UserRole.Leader]),
-    getSingleCellByIdHandler
-  )
-  .patch(authorizedRoles([UserRole.Admin]), editCellHandler)
-  .delete(authorizedRoles([UserRole.Admin]), deleteCellHandler)
+  .get(authorizedRoles(UserRole.Leader), getSingleCellByIdHandler)
+  .patch(authorizedRoles(), editCellHandler)
+  .delete(authorizedRoles(), deleteCellHandler)
 
-router
-  .route('/:id/add-leader')
-  .post(authorizedRoles([UserRole.Admin]), addLeaderToCellHandler)
+router.route('/:id/add-leader').post(authorizedRoles(), addLeaderToCellHandler)
 
 export default router

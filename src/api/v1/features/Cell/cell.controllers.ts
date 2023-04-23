@@ -12,7 +12,7 @@ import {
 import { asyncHandler } from '../../middlewares'
 import { ErrorResponse } from '../../utils'
 import { IMember } from '../member'
-import { IUser, getSingleUserById } from '../user'
+import { IUser, getSingleUserByEmail } from '../user'
 
 export const getCellsHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -102,13 +102,15 @@ export const deleteCellHandler = asyncHandler(
 
 export const addLeaderToCellHandler = asyncHandler(
   async (
-    req: Request<{ id: ICell['_id'] }, {}, IUser, {}>,
+    req: Request<{ id: ICell['_id'] }, {}, { email: IUser['email'] }, {}>,
     res: Response,
     next: NextFunction
   ) => {
+    const { email } = req.body
+
     const cell = await getSingleCellById(req.params.id)
 
-    const user = await getSingleUserById(req.body._id)
+    const user = await getSingleUserByEmail(email)
 
     if (!cell) {
       return next(
@@ -118,7 +120,7 @@ export const addLeaderToCellHandler = asyncHandler(
 
     if (!user) {
       return next(
-        new ErrorResponse(`User with the id of ${req.body._id} not found`, 404)
+        new ErrorResponse(`User with the email of ${email} not found`, 404)
       )
     }
 
