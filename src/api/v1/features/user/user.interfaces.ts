@@ -1,4 +1,3 @@
-import { Request } from 'express'
 import { Types } from 'mongoose'
 
 export enum UserRole {
@@ -18,8 +17,4 @@ export interface IBaseUser {
 
 export default interface IUser extends IBaseUser {
   _id: Types.ObjectId
-}
-
-export interface IRequestWithUer extends Request {
-  user?: IUser
 }
