@@ -4,7 +4,7 @@ import { IUser } from '../user'
 
 export interface IBaseCell {
   name: string
-  leaders?: Array<IUser>
+  leaders?: Array<IUser> | Array<IUser['_id']>
 }
 
 export default interface ICell extends IBaseCell {

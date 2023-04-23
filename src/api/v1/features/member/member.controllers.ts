@@ -15,7 +15,8 @@ import { IAttendance } from '../attendance'
 import { IDepartment } from '../department'
 import { IWelfare } from '../welfare'
 import { ITithe } from '../tithe'
-import { ICell } from '../cell'
+import { ICell, getSingleCellById } from '../cell'
+import { IUser, UserRole } from '../user'
 
 export const getMembersHandler = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -101,7 +102,32 @@ export const addMemberHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const { lastName, firstName, otherNames } = req.body
+    const authUser = req.user as IUser
+
+    const {
+      lastName,
+      firstName,
+      otherNames,
+      cell: { cell },
+    } = req.body
+
+    // Checking if the authUser is a leader in this cell before adding the member
+    const cellToAddMember = await getSingleCellById(cell as ICell['_id'])
+
+    if (cellToAddMember && cellToAddMember.leaders) {
+      const isCellLeader =
+        authUser.roles.includes(UserRole.Admin) ||
+        (cellToAddMember.leaders as Array<IUser['_id']>).includes(authUser._id)
+
+      if (!isCellLeader) {
+        return next(
+          new ErrorResponse(
+            `You can't add a new member because you are not a leader in this cell`,
+            404
+          )
+        )
+      }
+    }
 
     req.body.fullName = getFullName(
       lastName,
@@ -121,7 +147,31 @@ export const editMemberHandler = asyncHandler(
     res: Response,
     next: NextFunction
   ) => {
-    const { lastName, firstName, otherNames } = req.body
+    const authUser = req.user as IUser
+
+    const {
+      lastName,
+      firstName,
+      otherNames,
+      cell: { cell },
+    } = req.body
+    // Checking if the authUser is a leader in this cell before adding the member
+    const cellToAddMember = await getSingleCellById(cell as ICell['_id'])
+
+    if (cellToAddMember && cellToAddMember.leaders) {
+      const isCellLeader =
+        authUser.roles.includes(UserRole.Admin) ||
+        (cellToAddMember.leaders as Array<IUser['_id']>).includes(authUser._id)
+
+      if (!isCellLeader) {
+        return next(
+          new ErrorResponse(
+            `You can't add a new member because you are not a leader in this cell`,
+            404
+          )
+        )
+      }
+    }
 
     req.body.fullName = getFullName(
       lastName && lastName,

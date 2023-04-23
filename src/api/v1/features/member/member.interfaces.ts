@@ -20,7 +20,7 @@ export interface IBaseMember {
     phoneNumber?: string
   }
   cell: {
-    cell: ICell
+    cell: ICell | ICell['_id']
     dateJoined?: Date
   }
 }
