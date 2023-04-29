@@ -9,6 +9,13 @@ const CellSchema = new Schema<ICell>(
       unique: true,
       trim: true,
     },
+    leaders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        unique: true,
+      },
+    ],
   },
   {
     timestamps: true,

@@ -16,6 +16,7 @@ import {
   getCells,
   getSingleCellById,
   getSingleCell,
+  addLeaderToCell,
 } from './cell.services'
 
 // Importing Controllers
@@ -25,6 +26,7 @@ import {
   editCellHandler,
   getCellsHandler,
   getSingleCellByIdHandler,
+  addLeaderToCellHandler,
 } from './cell.controllers'
 
 // Importing Routes
@@ -50,6 +52,7 @@ export {
   getCells,
   getSingleCellById,
   getSingleCell,
+  addLeaderToCell,
 }
 
 // Exporting Controllers
@@ -59,6 +62,7 @@ export {
   editCellHandler,
   getCellsHandler,
   getSingleCellByIdHandler,
+  addLeaderToCellHandler,
 }
 
 // Exporting Routes

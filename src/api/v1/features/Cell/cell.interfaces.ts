@@ -1,8 +1,10 @@
 import { Types } from 'mongoose'
 import { IMember } from '../member'
+import { IUser } from '../user'
 
 export interface IBaseCell {
   name: string
+  leaders?: Array<IUser> | Array<IUser['_id']>
 }
 
 export default interface ICell extends IBaseCell {
